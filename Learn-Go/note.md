@@ -35,3 +35,20 @@
 - Go also has it’s own built-in documentation system. 
 - Use the command `go doc` followed by a package name. For instance, to find out more information on the `fmt` package: `go doc fmt`
 - Get more specific information about a function in a package (like `fmt`‘s `Println` function) append `.Println` (or `.println`, the capitalization of the function doesn’t matter to `go doc`): `go doc fmt.Println`
+
+## Values and Variables
+- "Data" can be store by using variables
+
+**Data Types**
+- Integers, or `int`s, are whole/counting numbers. You would use an `int` to count the number of books on a shelf, the number of products in a warehouse, the number of people on a website, etc…
+    - Basis Number Types in [Go](https://golang.org/ref/spec#Numeric_types)
+- Floating-point numbers, or `float`s, can include fractional data. You would use a `float` to store distances, percentages, and other quantities that required division or precision.
+- Complex numbers, `complex`, are pairs of floating-point numbers where the second part of the pair is marked with the “imaginary” unit `i`. Complex numbers are particularly useful when reasoning in 2-dimensional space and have other utilizations that make them relevant for involved calculations.
+- Types also indicate how many bits (binary digits) will be used to represent the data. Fewer bits also means less data to save, so it will use less of a computer’s memory to hold onto that data.
+- Signed integers can be negative, but unsigned integers can only be positive.
+- `:=` create a new variable with the value appearing afterwards and infers type based on that value.
+
+**fmt package**
+- The verbs: `%v`, `%T`, `%d`, and `%f`.
+- `fmt.Sprint()`, `fmt.Sprintln()`, `fmt.Sprintf()` will not print strings, but formats them.
+- `fmt.Scan()` allows us to take in user input.
