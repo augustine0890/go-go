@@ -59,3 +59,7 @@
 - Short variable declarations can be used prior to providing a condition for either `if` or `switch` statements. Declared variables are scoped to the statement blocks.
 - The `math/rand` library’s `.Intn()` method is used to generate random numbers.
 - Unique seed values can be created using time, namely `rand.seed(time.Now().UnixNano())`
+
+## Functions
+- When a similar pattern of code is used multiple times but with numbers of data tweaked slightly.
+- `defer` call a function after the current function finishes
