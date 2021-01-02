@@ -52,3 +52,10 @@
 - The verbs: `%v`, `%T`, `%d`, and `%f`.
 - `fmt.Sprint()`, `fmt.Sprintln()`, `fmt.Sprintf()` will not print strings, but formats them.
 - `fmt.Scan()` allows us to take in user input.
+
+## Conditionals
+- `if` statement that checks a condition and executes code if the condition is `true`
+- `switch` statements can be used to check between multiple conditions much like an `if… else if… else` statement.
+- Short variable declarations can be used prior to providing a condition for either `if` or `switch` statements. Declared variables are scoped to the statement blocks.
+- The `math/rand` library’s `.Intn()` method is used to generate random numbers.
+- Unique seed values can be created using time, namely `rand.seed(time.Now().UnixNano())`
