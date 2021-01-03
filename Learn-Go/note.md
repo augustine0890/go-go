@@ -63,3 +63,12 @@
 ## Functions
 - When a similar pattern of code is used multiple times but with numbers of data tweaked slightly.
 - `defer` call a function after the current function finishes
+
+## Addresses and Pointers
+- Go is a pass-by-value language
+- The computer sets aside some space in its memory to store the value. The space that the computer allocates is called an _address_. Each address is marked as a unique numerical value.
+- To find an address of a variable, use the `&` operator before a variable.
+- Pointers are variables that specifically store addresses.
+- A pointer is specific to what type of address it can store.
+- The `*` operator can be used to assign a pointer the type of the value its address holds.
+- The `*` operator can also be used to dereference a pointer and assign a new value.
