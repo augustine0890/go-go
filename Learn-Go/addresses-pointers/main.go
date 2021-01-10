@@ -6,6 +6,15 @@ func brainwash(saying *string) {
 	*saying = "Beep Boop"
 }
 
+// Pass the pointer of the variable
+func changeValue(str *string) {
+	*str = "changed!"
+}
+
+func changeValue2(str string) {
+	str = "changed2!"
+}
+
 func main() {
 	// Address
 	treasure := "The friends we make along the way."
@@ -36,4 +45,21 @@ func main() {
 	greeting := "Hello there!"
 	brainwash(&greeting)
 	fmt.Println("greeting is now:", greeting)
+
+	x := 7
+	// fmt.Println(&x)
+	y := &x
+	fmt.Println(x, y)
+
+	*y = 45
+	fmt.Println(x, y)
+
+	toChange := "hello"
+	fmt.Println(toChange)
+	changeValue(&toChange)
+	fmt.Println(toChange)
+
+	changeValue2(toChange)
+	fmt.Println(toChange)
+
 }
