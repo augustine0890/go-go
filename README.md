@@ -2,7 +2,7 @@
 Golang for everything
 
 - **Download and install** [here](https://golang.org/doc/install)
-    - Verify installing: `go verion`
+    - Verify installing: `go version`
     - Add the PATH: 
         - `sudo code ~/.zshrc` (if have VSCode)
         - `export PATH=$PATH:/usr/local/go/bin`
