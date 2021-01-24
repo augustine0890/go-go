@@ -2,10 +2,32 @@ package main
 
 import "fmt"
 
-func main() {
-	fmt.Println("Hello, world!")
+// func main() {
+// fmt.Println("Hello, world!")
+// }
 
-	// trunc()
+// P struct
+type P struct {
+	x string
+	y int
+}
+
+func main() {
+	b := P{"x", -1}
+	a := [...]P{P{"a", 10},
+		P{"b", 2},
+		P{"c", 3}}
+	for _, z := range a {
+		if z.y > b.y {
+			b = z
+		}
+	}
+	fmt.Println(b.x)
+
+	x := [...]int{1, 2, 3, 4, 5}
+	y := x[0:2]
+	z := x[1:4]
+	fmt.Print(len(y), cap(y), len(z), cap(z))
 }
 
 // func main() {
