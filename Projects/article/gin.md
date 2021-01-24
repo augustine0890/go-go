@@ -40,3 +40,8 @@ Request --> Route Parser --> [Optional Middleware] --> Route Handler --> [Option
 
 ## Installing the Dependency
 - `go get -u github.com/gin-gonic/gin`
+- Create the `main.go`
+- Build the application and create an executable named `app`
+    - `go build -o app`
+- Execute the application
+    - `./app`
