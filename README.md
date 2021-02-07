@@ -9,3 +9,9 @@ Golang for everything
 - **Setup `Go` workspace**
     - `mkdir $HOME/go && cd go`
     - `mkdir bin pkg src`
+
+# Postgres
+- Go inside the container
+    -  `docker exec -it db bash`
+- Go to localhose
+    - `psql -h localhost -p 5432 -U postgres`
