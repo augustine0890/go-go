@@ -1,6 +1,11 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"errors"
+
+	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
+)
 
 // HINT: If you want to split null and "", you should use *string instead of string.
 // User
@@ -19,4 +24,15 @@ type Follow struct {
 	FollowingID   uint
 	FollowedBy    User
 	FollowedbByID uint
+}
+
+func (u *User) setPassword(password string) error {
+	if len(password) == 0 {
+		return errors.New("Password should not be empty!")
+	}
+	bytePassword := []byte(password)
+	// Make sure the second param `bcrypt generator cost` between [4, 32)
+	passwordHash, _ := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
+	u.PasswordHash = string(passwordHash)
+	return nil
 }
