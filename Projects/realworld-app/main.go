@@ -29,10 +29,8 @@ func main() {
 		})
 	})
 
-	v1 := r.Group("/api/v1")
-	{
-		user := new()
-	}
+	// v1 := r.Group("/api/v1")
+
 	port := os.Getenv("PORT")
 
 	r.Run(":" + port)
