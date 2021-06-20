@@ -4,10 +4,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/golang-migrate/migrate/v4/database/postgres"
 	"github.com/joho/godotenv"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+type DBController struct {
+	DB *gorm.DB
+}
 
 // Create a new connection to database
 func DatabaseConnection() *gorm.DB {
@@ -19,9 +23,23 @@ func DatabaseConnection() *gorm.DB {
 	dbUser := os.Getenv("DATABASE_USER")
 	dbPass := os.Getenv("DATABASE_PASSWORD")
 	dbHost := os.Getenv("DATABASE_HOST")
+	dbPort := os.Getenv("DATABASE_PORT")
 	dbName := os.Getenv("DATABASE_NAME")
 
-	dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Seoul", dbHost, dbUser, dbPass, dbName, dbPort)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?charset=utf8&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
+	if err != nil {
+		panic("Failed to create a connection to database")
+	}
+
+	return db
+}
+
+// Close a connection to database
+func CloseDatabaseConnection(db *gorm.DB) {
+	DBController, err := db.DB()
+	if err != nil {
+		panic("Failed to close connection from database")
+	}
+	DBController.Close()
 }
