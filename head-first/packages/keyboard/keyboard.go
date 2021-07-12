@@ -1,14 +1,17 @@
-package main
+// Package: keyboard reads user input for the keyboardpackage
+// Language: go
+// Path: head-first/packages/keyboard/keyboard.go
+package keyboard
 
 import (
 	"bufio"
-	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
 )
 
+// GetFloat reads a floating-point number from the keyboard.
+// It returns the number read and any error encountered.
 func getFloat() (float64, error) {
 	reader := bufio.NewReader(os.Stdin)
 	input, err := reader.ReadString('\n')
@@ -22,19 +25,4 @@ func getFloat() (float64, error) {
 		return 0, err
 	}
 	return number, nil
-}
-
-func main() {
-	fmt.Print("Enter a grade: ")
-	grade, err := getFloat()
-	if err != nil {
-		log.Fatal(err)
-	}
-	var status string
-	if grade >= 60 {
-		status = "pass"
-	} else {
-		status = "fail"
-	}
-	fmt.Printf("The student's grade is %.2f and the student's status is %s.\n", grade, status)
 }

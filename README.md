@@ -9,7 +9,13 @@ Golang for everything
 - **Setup `Go` workspace**
     - `mkdir $HOME/go && cd go`
     - `mkdir bin pkg src`
+- If you store your code in a directory other than the default, you'll need to configure the `go tool` to look in the right place.
+- Setup the `GOPATH`
+    - `export GOPATH="/code"`
 
+## Packages
+- The package names should be all lowercase, and ideally consist of single word.
+- A package's functions can only be called from outside that package if they're exported. A function is exported if its name begins with a capital letter.
 # Postgres
 - Go inside the container
     -  `docker exec -it db bash`
