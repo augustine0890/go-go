@@ -35,12 +35,21 @@ func puzzle() {
 	}
 }
 
+func weekday() {
+	weekday := [5]string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"}
+	for index, day := range weekday {
+		fmt.Printf("%v %v\n", index, day)
+	}
+}
 func main() {
 	fmt.Println("Go arrays")
 	declare()
 
 	fmt.Println("Go arrays puzzle")
 	puzzle()
+
+	fmt.Println("Go arrays weekday")
+	weekday()
 
 	numbers, err := datafile.GetFloats("data.txt")
 	if err != nil {
