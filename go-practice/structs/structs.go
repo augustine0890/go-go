@@ -46,6 +46,17 @@ func (s *Student) getMaxGrade() int {
 	return curMax
 }
 
+type Animal struct {
+	Name   string
+	Origin string
+}
+
+type Bird struct {
+	Animal
+	SpeedKPH float32
+	CanFly   bool
+}
+
 func main() {
 	fmt.Println(person{"Bob", 30})
 	fmt.Println(person{name: "Augustine", age: 31})
@@ -80,4 +91,10 @@ func main() {
 	fmt.Println("Average Grade:", average2)
 	fmt.Println("Max Grade:", s2.getMaxGrade())
 
+	b := Bird{}
+	b.Name = "Emu"
+	b.Origin = "Australia"
+	b.SpeedKPH = 48
+	b.CanFly = false
+	fmt.Print(b)
 }

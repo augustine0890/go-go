@@ -23,4 +23,7 @@ func main() {
 	c := make([]int, 5)
 	fmt.Println(c)
 	fmt.Printf("%T\n", c)
+	g := make([]int, 5, 15) // slice with length = 5 and capacity = 15
+	fmt.Println(len(g))
+	fmt.Println(cap(g))
 }
