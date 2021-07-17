@@ -15,8 +15,12 @@ func main() {
 	fmt.Println(cap(a[:3]))
 	b := append(a, 10)
 	fmt.Println(b)
+	d := append(b, []int{11, 12, 13, 14}...)
+	fmt.Println(d)
+	f := append(d[:5], d[6:]...)
+	fmt.Println(f)
 
 	c := make([]int, 5)
 	fmt.Println(c)
-	fmt.Printf("%T", c)
+	fmt.Printf("%T\n", c)
 }
