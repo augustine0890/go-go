@@ -47,6 +47,10 @@ func main() {
 	_, ok = statePopulations["Flo"]
 	fmt.Println(ok)
 
+	if pop, ok := statePopulations["Florida"]; ok {
+		fmt.Println(pop)
+	}
+
 	aDoctor := Doctor{
 		Number:    3,
 		ActorName: "John Pertwee",
