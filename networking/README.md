@@ -34,3 +34,20 @@
   - Transmission errors may lose messages.
 - Server errors:
   - Network card could fail, hardware problems, software may crash, database may become corrupted.
+
+  ## Socket-Level Programming
+  ### The TCP/IP Stack
+  - TCP/IP is the principal UNIX networking protocol.
+  - It's standard for Transmission Control Protocol/Internet Protocol
+  ```
+  Application (OSI 5-7) <-> TCP/UDP (OSI 4) <-> IP (OSI 3) <-> h/w inteface (OSI 1-2)
+  ```
+  ### Services
+  - Services run on host machines. They are typically long lived and are designed to wait for requests and respond to them.
+  - There are many standard ports.
+    - Telnet typically uses port 23 with the TCP protocol.
+    - HTTP usually uses port 80, but it often ports 8000, 8080, and 8088, all with TCP.
+
+## HTTP
+- The Web is built on top of the HTTP (Hypertext Transport Protocol), which is layered on top of TCP.
+- All the earier verions of HTTP are text-based. The most significant departure for HTTP/2 is that it is a binary format.
