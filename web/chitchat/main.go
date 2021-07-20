@@ -1,4 +1,4 @@
-package chitchat
+package main
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Printf("ChitChat %s started at %s", version(), config.Address)
+	fmt.Printf("ChitChat %s started at %s\n", version(), config.Address)
 
 	// handle static assets
 	mux := http.NewServeMux()

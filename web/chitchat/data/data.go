@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	_ "github.com/go-pg/pg/v10"
+	_ "github.com/lib/pq"
 )
 
 var Db *sql.DB
