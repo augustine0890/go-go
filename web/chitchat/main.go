@@ -15,6 +15,11 @@ func main() {
 
 	// index
 	mux.HandleFunc("/", index)
+	// error
+	mux.HandleFunc("/err", err)
+
+	// define in route_auth.go
+	mux.HandleFunc("/login", login)
 
 	server := &http.Server{
 		Addr:    config.Address,
