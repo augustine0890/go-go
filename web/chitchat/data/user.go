@@ -73,6 +73,19 @@ func (session *Session) Check() (valid bool, err error) {
 	return
 }
 
+// Delete session from database
+func (session *Session) DeleteByUUID() (err error) {
+	statement := "DELETE FROM sessions WHERE uuid = $1"
+	stmt, err := Db.Prepare(statement)
+	if err != nil {
+		return
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(session.Uuid)
+	return
+}
+
 // Create a new user, save user info into the database
 func (user *User) Create() (err error) {
 	statement := "INSERT INTO users (uuid, name, email, password, created_at) values ($1, $2, $3, $4, $5) returning id, uuid, created_at"
@@ -84,5 +97,13 @@ func (user *User) Create() (err error) {
 
 	// use QueryRow to return a row and scan the returned id into the User struct
 	err = stmt.QueryRow(uuid.New().String(), user.Name, user.Email, Encrypt(user.Password), time.Now()).Scan(&user.Id, &user.Uuid, &user.CreateAt)
+	return
+}
+
+// Get a single user given by email
+func UserByEmail(email string) (user User, err error) {
+	user = User{}
+	err = Db.QueryRow("SELECT id, uuid, name, email, password, created_at FROM users WHERE email = $1", email).Scan(
+		&user.Id, &user.Uuid, &user.Name, &user.Email, &user.Password, &user.CreateAt)
 	return
 }
