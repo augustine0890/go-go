@@ -8,6 +8,7 @@ import (
 
 func main() {
 	r := gin.Default()
+	r.Static("/public", "./public")
 	r.LoadHTMLGlob("templates/**/*.html")
 
 	r.GET("/", func(c *gin.Context) {
@@ -24,5 +25,4 @@ func main() {
 	})
 
 	r.Run(":3000")
-
 }
