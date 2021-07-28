@@ -1,0 +1,17 @@
+{
+  "go.useLanguageServer": true,
+  "go.languageServerExperimentalFeatures": {
+      "diagnostics": false, // for diagnostics as you type
+  },
+  "go.autocompleteUnimportedPackages": true,
+  "[go]": {
+      "editor.insertSpaces": false,
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+          "source.organizeImports": true
+      }
+  },
+  "gopls": {
+      "experimentalWorkspaceModule": true,
+  },
+}
