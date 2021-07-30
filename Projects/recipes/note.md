@@ -32,3 +32,5 @@
   - `MONGO_URI="mongodb://admin:password@localhost:27017/test?authSource=admin" go run main.go`
 - Pass `MONGO_DATABASE`
   - `MONGO_URI="mongodb://admin:password@localhost:27017/test?authSource=admin" MONGO_DATABASE=demo go run main.go`
+- Load `json` file directory into the collection
+  - `mongoimport --username admin --password password --authenticationDatabase admin --db demo --collection recipes --file recipes.json --jsonArray`
