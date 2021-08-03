@@ -79,6 +79,7 @@ func (handler *RecipesHandler) ListRecipesCacheHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		return
 	} else {
 		log.Print("Request to Redis")
 		recipes := make([]models.Recipe, 0)
@@ -140,4 +141,39 @@ func (handler *RecipesHandler) UpdateRecipeHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Recipe has been updated"})
+}
+
+func (handler *RecipesHandler) DeleteRecipeHandler(c *gin.Context) {
+	id := c.Param("id")
+	objectId, _ := primitive.ObjectIDFromHex(id)
+	_, err := handler.collection.DeleteOne(handler.ctx, bson.M{
+		"_id": objectId,
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Recipe has been deleted",
+	})
+}
+
+func (handler *RecipesHandler) GetOneRecipeHandler(c *gin.Context) {
+	id := c.Param("id")
+	objectId, _ := primitive.ObjectIDFromHex(id)
+	cur := handler.collection.FindOne(handler.ctx, bson.M{
+		"_id": objectId,
+	})
+	var recipe models.Recipe
+	err := cur.Decode(&recipe)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, recipe)
 }
