@@ -61,3 +61,11 @@
 - `redis.conf` file
   - `maxmemory-policy allkeys-lru` --> Least Recently Used (LRU) deletes the cache items that were the least recently used.
   - `maxmemory 512mb`
+- [Redis Insights](https://redislabs.com/fr/redis-enterprise/redis-insight/) (GUI)
+
+# Performance Benchmark
+- Simulate multiple request with [Apache Benchmark](https://httpd.apache.org/docs/2.4/programs/ab.html)
+  - `ab -n 2000 -c 100 -g without-cache.data http://localhost:8080/recipes`
+  - `ab -n 2000 -c 100 -g with-cache.data http://localhost:8080/cache/recipes`
+- Time taken for tests: total time to complete the 2000 requests
+- Time per request: how many milliseconds it takes to complete one request.

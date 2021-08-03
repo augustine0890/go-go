@@ -57,14 +57,17 @@ func init() {
 	status := redisClient.Ping()
 	log.Println("Redis status --> ", status)
 
-	recipesHandler = handlers.NewRecipeHandler(ctx, collection)
+	recipesHandler = handlers.NewRecipeHandler(ctx, collection, redisClient)
 }
 
 func main() {
 	router := gin.Default()
 	router.GET("/recipes", recipesHandler.ListRecipesHandler)
+	router.GET("/cache/recipes", recipesHandler.ListRecipesCacheHandler)
 	router.POST("/recipes", recipesHandler.NewRecipeHandler)
 	router.PUT("/recipes/:id", recipesHandler.UpdateRecipeHandler)
+	// router.DELETE("/recipes/:id", recipesHandler.DeleteRecipeHandler)
+	// router.GET("/recipes/:id", recipesHandler.GetOneRecipeHandler)
 
 	router.Run()
 }
