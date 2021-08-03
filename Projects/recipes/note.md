@@ -28,7 +28,7 @@
   - `docker run -d --name mongodb -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password -p 27017:27017 mongo:4.4.3`
   - `-d` flag: detached mode
 - Mount the directory to the `/data/db` directory
-  - `docker run -d --name mongodb -v /Users/supertree/data:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password -p 27017:27017 mongo:4.4.3`
+  - `docker run -d --name mongodb -v /Users/supertree/data/mongo:/data/db -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password -p 27017:27017 mongo:4.4.3`
 - Docker Secrets: 
   - `openssl rand -base64 12 | docker secret create mongodb_password`
   - Generate a random password for a MongoDB user and set it as a Docker secret.
@@ -52,3 +52,12 @@
   - `MONGO_URI="mongodb://admin:password@localhost:27017/test?authSource=admin" MONGO_DATABASE=demo go run *.go`
 - Load `json` file directory into the collection
   - `mongoimport --username admin --password password --authenticationDatabase admin --db demo --collection recipes --file recipes.json --jsonArray`
+
+# Redis Docker
+- Run a container
+  - `docker run -d --name redis -p 6379:6379 redis:letest`
+  - The `-d` flag runs the Redis container as a daemon
+  - The `-p` flag maps port 6379 of the container to port 6379 of the host
+- `redis.conf` file
+  - `maxmemory-policy allkeys-lru` --> Least Recently Used (LRU) deletes the cache items that were the least recently used.
+  - `maxmemory 512mb`
