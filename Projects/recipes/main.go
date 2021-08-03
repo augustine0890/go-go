@@ -17,6 +17,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -41,8 +42,6 @@ type Recipe struct {
 	Instructions []string           `json:"instructions" bson:"instructions"`
 	PublishedAt  time.Time          `json:"publishedAt" bson:"publishedAt"`
 }
-
-var recipes []Recipe
 
 var ctx context.Context
 var err error
@@ -114,10 +113,39 @@ func NewRecipeHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, recipe)
 }
 
+func UpdateRecipeHandler(c *gin.Context) {
+	id := c.Param("id")
+	var recipe Recipe
+	if err := c.ShouldBindJSON(&recipe); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	objectId, _ := primitive.ObjectIDFromHex(id)
+	_, err := collection.UpdateOne(ctx, bson.M{
+		"_id": objectId,
+	}, bson.D{{"$set", bson.D{
+		{"name", recipe.Name},
+		{"instructions", recipe.Instructions},
+		{"ingredients", recipe.Ingredients},
+		{"tags", recipe.Tags},
+	}}})
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Recipe has been updated"})
+}
+
 func main() {
 	router := gin.Default()
 	router.GET("/recipes", ListRecipesHandler)
 	router.POST("/recipes", NewRecipeHandler)
+	router.PUT("/recipes/:id", UpdateRecipeHandler)
 
 	router.Run()
 }
