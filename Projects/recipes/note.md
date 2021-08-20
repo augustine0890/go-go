@@ -69,3 +69,10 @@
   - `ab -n 2000 -c 100 -g with-cache.data http://localhost:8080/cache/recipes`
 - Time taken for tests: total time to complete the 2000 requests
 - Time per request: how many milliseconds it takes to complete one request.
+
+# Authentication
+- Generate a random secret string
+  - `openssl rand -base64 16`
+- JWTs (JSON Web Tokens)
+  - `go get github.com/dgrijalva/jwt-go`
+- Sign-in using a username/password --> valid <---> JWT token. The client will use the JWT token in future request (`Authorization` header)

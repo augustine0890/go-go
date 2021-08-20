@@ -30,6 +30,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
+var authHandler *handlers.AuthHandler
 var recipesHandler *handlers.RecipesHandler
 
 func init() {
@@ -58,16 +59,25 @@ func init() {
 	log.Println("Redis status --> ", status)
 
 	recipesHandler = handlers.NewRecipeHandler(ctx, collection, redisClient)
+	authHandler = &handlers.AuthHandler{}
 }
 
 func main() {
 	router := gin.Default()
+
 	router.GET("/recipes", recipesHandler.ListRecipesHandler)
-	router.GET("/cache/recipes", recipesHandler.ListRecipesCacheHandler)
-	router.POST("/recipes", recipesHandler.NewRecipeHandler)
-	router.PUT("/recipes/:id", recipesHandler.UpdateRecipeHandler)
-	router.DELETE("/recipes/:id", recipesHandler.DeleteRecipeHandler)
-	router.GET("/recipes/:id", recipesHandler.GetOneRecipeHandler)
+
+	router.POST("/signin", authHandler.SignInHandler)
+
+	authorized := router.Group("/")
+	authorized.Use(authHandler.AuthMiddleware())
+	{
+		authorized.GET("/cache/recipes", recipesHandler.ListRecipesCacheHandler)
+		authorized.POST("/recipes", recipesHandler.NewRecipeHandler)
+		authorized.PUT("/recipes/:id", recipesHandler.UpdateRecipeHandler)
+		authorized.DELETE("/recipes/:id", recipesHandler.DeleteRecipeHandler)
+		authorized.GET("/recipes/:id", recipesHandler.GetOneRecipeHandler)
+	}
 
 	router.Run()
 }
