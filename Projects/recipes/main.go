@@ -68,6 +68,7 @@ func main() {
 	router.GET("/recipes", recipesHandler.ListRecipesHandler)
 
 	router.POST("/signin", authHandler.SignInHandler)
+	router.POST("/refresh", authHandler.RefreshHandler)
 
 	authorized := router.Group("/")
 	authorized.Use(authHandler.AuthMiddleware())
