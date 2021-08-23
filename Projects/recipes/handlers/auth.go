@@ -67,6 +67,8 @@ func (handler *AuthHandler) SignUpHandler(c *gin.Context) {
 	insert, err := handler.collection.InsertOne(handler.ctx, bson.M{
 		"username": user.Username,
 		"password": string(passwordHash),
+		"phone":    user.Phone,
+		"address":  user.Address,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -252,4 +254,30 @@ func (handler *AuthHandler) AuthSessionMiddlware() gin.HandlerFunc {
 		}
 		c.Next()
 	}
+}
+
+func (handler *AuthHandler) GetProfileHandler(c *gin.Context) {
+	var user models.User
+	session := sessions.Default(c)
+	userName := session.Get("username")
+	if userName == nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "User not logged in",
+		})
+		c.Abort()
+		return
+	}
+
+	curr := handler.collection.FindOne(handler.ctx, bson.M{
+		"username": userName,
+	}).Decode(&user)
+
+	if curr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Invalid username",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
 }

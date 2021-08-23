@@ -77,18 +77,22 @@ func main() {
 	router.GET("/recipes", recipesHandler.ListRecipesHandler)
 
 	router.POST("/signup", authHandler.SignUpHandler)
-	router.POST("/signin", authHandler.SignInHandler)
+
+	// router.POST("/signin", authHandler.SignInHandler)
+	// Session
+	router.POST("/signin", authHandler.SignInSessionHandler)
 	router.POST("/refresh", authHandler.RefreshHandler)
 
 	router.POST("/signout", authHandler.SignOutHandler)
 
 	authorized := router.Group("/")
 	// Token Authentication
-	authorized.Use(authHandler.AuthMiddleware())
+	// authorized.Use(authHandler.AuthMiddleware())
 	// Session Authentication
-	// authorized.Use(authHandler.AuthSessionMiddlware())
+	authorized.Use(authHandler.AuthSessionMiddlware())
 
 	{
+		authorized.GET("/users/profile", authHandler.GetProfileHandler)
 		authorized.GET("/cache/recipes", recipesHandler.ListRecipesCacheHandler)
 		authorized.POST("/recipes", recipesHandler.NewRecipeHandler)
 		authorized.PUT("/recipes/:id", recipesHandler.UpdateRecipeHandler)
