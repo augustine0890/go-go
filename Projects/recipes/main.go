@@ -76,6 +76,7 @@ func main() {
 
 	router.GET("/recipes", recipesHandler.ListRecipesHandler)
 
+	router.POST("/signup", authHandler.SignUpHandler)
 	router.POST("/signin", authHandler.SignInHandler)
 	router.POST("/refresh", authHandler.RefreshHandler)
 

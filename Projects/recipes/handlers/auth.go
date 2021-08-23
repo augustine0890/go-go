@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"log"
 
 	"net/http"
 	"os"
@@ -38,6 +39,43 @@ func NewAuthHandler(ctx context.Context, collection *mongo.Collection) *AuthHand
 		collection: collection,
 		ctx:        ctx,
 	}
+}
+
+func (handler *AuthHandler) SignUpHandler(c *gin.Context) {
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	count, _ := handler.collection.CountDocuments(handler.ctx, bson.M{
+		"username": user.Username,
+	})
+	if count != 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Username is already in use.",
+		})
+		return
+	}
+
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Fatal(err)
+	}
+	insert, err := handler.collection.InsertOne(handler.ctx, bson.M{
+		"username": user.Username,
+		"password": string(passwordHash),
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Can not create User",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, insert)
 }
 
 func (handler *AuthHandler) SignInHandler(c *gin.Context) {
