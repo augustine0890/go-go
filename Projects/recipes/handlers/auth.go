@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+
 	"net/http"
 	"os"
 	"recipes/models"
@@ -9,7 +10,9 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthHandler struct {
@@ -27,8 +30,17 @@ type JWTOutput struct {
 	Expires time.Time `json:"expires"`
 }
 
+func NewAuthHandler(ctx context.Context, collection *mongo.Collection) *AuthHandler {
+	return &AuthHandler{
+		collection: collection,
+		ctx:        ctx,
+	}
+}
+
 func (handler *AuthHandler) SignInHandler(c *gin.Context) {
 	var user models.User
+	var foundUser models.User
+
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -36,11 +48,21 @@ func (handler *AuthHandler) SignInHandler(c *gin.Context) {
 		return
 	}
 
-	// h := sha256.New()
+	curr := handler.collection.FindOne(handler.ctx, bson.M{
+		"username": user.Username,
+	}).Decode(&foundUser)
 
-	if user.Username != "admin" || user.Password != "password" {
+	if curr != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Invalid username provided.",
+		})
+		return
+	}
+
+	err := bcrypt.CompareHashAndPassword([]byte(foundUser.Password), []byte(user.Password))
+	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "Invalid username or password",
+			"error": "Invalid password provided.",
 		})
 		return
 	}

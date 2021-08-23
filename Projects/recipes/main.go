@@ -48,7 +48,7 @@ func init() {
 	}
 	log.Println("Connected to MongoDB")
 
-	collection := client.Database(os.Getenv("MONGO_DATABASE")).Collection("recipes")
+	collectionReciptes := client.Database(os.Getenv("MONGO_DATABASE")).Collection("recipes")
 
 	redisClient := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
@@ -58,8 +58,10 @@ func init() {
 	status := redisClient.Ping()
 	log.Println("Redis status --> ", status)
 
-	recipesHandler = handlers.NewRecipeHandler(ctx, collection, redisClient)
-	authHandler = &handlers.AuthHandler{}
+	recipesHandler = handlers.NewRecipeHandler(ctx, collectionReciptes, redisClient)
+
+	collectionUsers := client.Database(os.Getenv("MONGO_DATABASE")).Collection("users")
+	authHandler = handlers.NewAuthHandler(ctx, collectionUsers)
 }
 
 func main() {
