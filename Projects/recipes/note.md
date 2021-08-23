@@ -81,4 +81,22 @@
 - Session cookies allow users to be recognized within an application without having to authenticate. Without cookies, every time you issue an API request, the server will treat you like a completely new visitor.
 - Gin middleware for session
   - `go get github.com/gin-contrib/sessions`
-- 
+
+# HTTPS Server
+- Download [Ngrok](https://ngrok.com/download) at `https://ngrok.com/download`
+- Uzip: `unzip ngrok-stable-darwin-amd64.zip`
+- `cp ngrok /usr/local/bin`
+- `chmod +x /usr/local/bin/ngrok`
+- Verify installation: `ngrok version`
+- Configure Ngrok to listen and forward requests into port 8080
+  - `ngrok http 8080`
+
+# Self-signed certificates
+- SSL certificates are what websites use to move from HTTP and HTTPs. The certificate uses SSL/Transport Layer Security (TLS) encryption to keep user data secure, verify ownership of the website.
+- Two files generate
+  - `localhost.crt`: self-signed certificate
+  - `localhost.key`: private key
+```
+mkdir certs
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/localhost.key -out certs/localhost.crt
+```

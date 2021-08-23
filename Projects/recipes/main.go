@@ -69,6 +69,8 @@ func init() {
 func main() {
 	router := gin.Default()
 
+	// router.RunTLS(":443", "certs/localyhost.crt", "certs/localhost.key")
+
 	store, _ := redisStore.NewStore(10, "tcp", "localhost:6379", "", []byte("secret"))
 	router.Use(sessions.Sessions("recipes_api", store))
 
@@ -81,9 +83,9 @@ func main() {
 
 	authorized := router.Group("/")
 	// Token Authentication
-	// authorized.Use(authHandler.AuthMiddleware())
+	authorized.Use(authHandler.AuthMiddleware())
 	// Session Authentication
-	authorized.Use(authHandler.AuthSessionMiddlware())
+	// authorized.Use(authHandler.AuthSessionMiddlware())
 
 	{
 		authorized.GET("/cache/recipes", recipesHandler.ListRecipesCacheHandler)
