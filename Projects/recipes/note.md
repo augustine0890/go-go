@@ -76,3 +76,9 @@
 - JWTs (JSON Web Tokens)
   - `go get github.com/dgrijalva/jwt-go`
 - Sign-in using a username/password --> valid <---> JWT token. The client will use the JWT token in future request (`Authorization` header)
+
+# Client sessions and cookies
+- Session cookies allow users to be recognized within an application without having to authenticate. Without cookies, every time you issue an API request, the server will treat you like a completely new visitor.
+- Gin middleware for session
+  - `go get github.com/gin-contrib/sessions`
+- 
