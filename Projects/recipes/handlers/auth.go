@@ -34,6 +34,12 @@ type JWTOutput struct {
 	Expires time.Time `json:"expires"`
 }
 
+type Profile struct {
+	Username string `json:"username"`
+	Phone    string `json:"phone"`
+	Address  string `json:"address"`
+}
+
 func NewAuthHandler(ctx context.Context, collection *mongo.Collection) *AuthHandler {
 	return &AuthHandler{
 		collection: collection,
@@ -169,6 +175,9 @@ func (handler *AuthHandler) SignInSessionHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Set("username", user.Username)
 	session.Set("token", sessionToken)
+	session.Options(sessions.Options{
+		MaxAge: 60 * 10, // 10 mins
+	})
 	session.Save()
 
 	c.JSON(http.StatusOK, gin.H{"message": "User signed in"})
@@ -184,11 +193,13 @@ func (handler *AuthHandler) RefreshHandler(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 	if !tkn.Valid {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Invalid token",
 		})
+		return
 	}
 
 	if time.Unix(claims.ExpiresAt, 0).Sub(time.Now()) > 30*time.Second {
@@ -213,6 +224,30 @@ func (handler *AuthHandler) RefreshHandler(c *gin.Context) {
 		Expires: expirationTime,
 	}
 	c.JSON(http.StatusOK, jwtOutput)
+}
+
+func (handler *AuthHandler) RefreshSessionHandler(c *gin.Context) {
+	session := sessions.Default(c)
+	sessionToken := session.Get("token")
+	sessionUser := session.Get("username")
+	if sessionToken == nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Invalid session cookie.",
+		})
+		return
+	}
+
+	sessionToken = xid.New().String()
+	session.Set("username", sessionUser.(string))
+	session.Set("token", sessionToken)
+	session.Options(sessions.Options{
+		MaxAge: 60 * 10,
+	})
+	session.Save()
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "New session issued.",
+	})
 }
 
 func (handler *AuthHandler) AuthMiddleware() gin.HandlerFunc {
@@ -257,7 +292,7 @@ func (handler *AuthHandler) AuthSessionMiddlware() gin.HandlerFunc {
 }
 
 func (handler *AuthHandler) GetProfileHandler(c *gin.Context) {
-	var user models.User
+	var profile Profile
 	session := sessions.Default(c)
 	userName := session.Get("username")
 	if userName == nil {
@@ -270,7 +305,7 @@ func (handler *AuthHandler) GetProfileHandler(c *gin.Context) {
 
 	curr := handler.collection.FindOne(handler.ctx, bson.M{
 		"username": userName,
-	}).Decode(&user)
+	}).Decode(&profile)
 
 	if curr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -279,5 +314,5 @@ func (handler *AuthHandler) GetProfileHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, profile)
 }

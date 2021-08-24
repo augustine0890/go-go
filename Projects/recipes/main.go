@@ -79,11 +79,12 @@ func main() {
 	router.POST("/signup", authHandler.SignUpHandler)
 
 	// router.POST("/signin", authHandler.SignInHandler)
+	// router.POST("/refresh", authHandler.RefreshHandler)
+	router.POST("/signout", authHandler.SignOutHandler)
+
 	// Session
 	router.POST("/signin", authHandler.SignInSessionHandler)
-	router.POST("/refresh", authHandler.RefreshHandler)
-
-	router.POST("/signout", authHandler.SignOutHandler)
+	router.POST("/refresh", authHandler.RefreshSessionHandler)
 
 	authorized := router.Group("/")
 	// Token Authentication
