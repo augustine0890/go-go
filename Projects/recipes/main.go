@@ -78,19 +78,19 @@ func main() {
 
 	router.POST("/signup", authHandler.SignUpHandler)
 
-	// router.POST("/signin", authHandler.SignInHandler)
-	// router.POST("/refresh", authHandler.RefreshHandler)
+	router.POST("/signin", authHandler.SignInHandler)
+	router.POST("/refresh", authHandler.RefreshHandler)
 	router.POST("/signout", authHandler.SignOutHandler)
 
 	// Session
-	router.POST("/signin", authHandler.SignInSessionHandler)
-	router.POST("/refresh", authHandler.RefreshSessionHandler)
+	// router.POST("/signin", authHandler.SignInSessionHandler)
+	// router.POST("/refresh", authHandler.RefreshSessionHandler)
 
 	authorized := router.Group("/")
 	// Token Authentication
-	// authorized.Use(authHandler.AuthMiddleware())
+	authorized.Use(authHandler.AuthMiddleware())
 	// Session Authentication
-	authorized.Use(authHandler.AuthSessionMiddlware())
+	// authorized.Use(authHandler.AuthSessionMiddlware())
 
 	{
 		authorized.GET("/users/profile", authHandler.GetProfileHandler)

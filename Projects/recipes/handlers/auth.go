@@ -137,6 +137,14 @@ func (handler *AuthHandler) SignInHandler(c *gin.Context) {
 		Token:   tokenString,
 		Expires: expirationTime,
 	}
+
+	session := sessions.Default(c)
+	session.Set("username", user.Username)
+	session.Options(sessions.Options{
+		MaxAge: 60 * 10,
+	})
+	session.Save()
+
 	c.JSON(http.StatusOK, jwtOutput)
 
 }
