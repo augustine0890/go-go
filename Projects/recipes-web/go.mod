@@ -1,4 +1,4 @@
-module irecipes-web
+module recipes-web
 
 go 1.16
 
