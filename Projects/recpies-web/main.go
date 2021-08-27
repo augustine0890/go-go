@@ -1,15 +1,13 @@
 package main
 
 import (
-	"embed"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
-
-var f embed.FS
-var recipes []Recipe
 
 type Recipe struct {
 	ID          string       `json:"id"`
@@ -25,8 +23,10 @@ type Ingredient struct {
 	Type     string `json:"type"`
 }
 
+var recipes []Recipe
+
 func IndexHandler(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.tmpl", gin.H{
+	c.HTML(http.StatusOK, "index.html", gin.H{
 		"recipes": recipes,
 	})
 }
@@ -34,7 +34,7 @@ func IndexHandler(c *gin.Context) {
 func RecipeHandler(c *gin.Context) {
 	for _, recipe := range recipes {
 		if recipe.ID == c.Param("id") {
-			c.HTML(http.StatusOK, "recipe.tmpl", gin.H{
+			c.HTML(http.StatusOK, "recipe.html", gin.H{
 				"recipe": recipe,
 			})
 			return
@@ -43,26 +43,29 @@ func RecipeHandler(c *gin.Context) {
 	c.File("404.html")
 }
 
+// func init() {
+// recipes = make([]Recipe, 0)
+// data, _ := f.ReadFile("recipes.json")
+// json.Unmarshal(data, &recipes)
+// }
+
 func init() {
 	recipes = make([]Recipe, 0)
-	data, _ := f.ReadFile("recipes.json")
-	json.Unmarshal(data, &recipes)
+	file, _ := ioutil.ReadFile("recipes.json")
+	_ = json.Unmarshal([]byte(file), &recipes)
 }
 
 func main() {
-	// templ := template.Must(template.New("").ParseFS(f, "templates/*.tmpl"))
-
-	// fsys, err := fs.Sub(f, "assets")
-	// if err != nil {
-	// panic(err)
-	// }
 
 	router := gin.Default()
-	router.LoadHTMLGlob("templates/*.tmpl")
-	// router.SetHTMLTemplate(templ)
 	router.Static("/assets", "./assets")
 	// router.StaticFS("/assets", http.FS(fsys))
+	router.LoadHTMLGlob("templates/*.html")
+	// router.SetHTMLTemplate(templ)
+
 	router.GET("/", IndexHandler)
 	router.GET("/recipes/:id", RecipeHandler)
 	router.Run()
+	fmt.Println("recipes", recipes)
+
 }
