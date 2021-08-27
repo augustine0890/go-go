@@ -100,3 +100,9 @@
 mkdir certs
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout certs/localhost.key -out certs/localhost.crt
 ```
+
+# Single-Page Applications (SPA)
+- Install `create react app`
+  - `npm install -g creates-react-app`
+- Create React project
+  - `create-react-app <recipes-client>`
