@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html"
 )
 
@@ -13,6 +14,9 @@ func main() {
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
+
+	// Log middleware config
+	app.Use(logger.New())
 
 	app.Get("/", home)
 	app.Get("/snippet", showSnippet)
