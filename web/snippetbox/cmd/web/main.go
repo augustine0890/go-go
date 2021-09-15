@@ -15,6 +15,9 @@ func main() {
 		Views: engine,
 	})
 
+	// Static files
+	app.Static("/", "./ui/static")
+
 	// Log middleware config
 	app.Use(logger.New())
 
