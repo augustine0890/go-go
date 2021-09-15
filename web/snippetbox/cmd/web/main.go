@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -8,15 +9,19 @@ import (
 	"github.com/gofiber/template/html"
 )
 
+var (
+	port = flag.String("port", ":4000", "Port to listen")
+)
+
 func main() {
+	// Parse flags
+	flag.Parse()
+
 	// Initialize html tamplate engine
 	engine := html.New("./ui/html", ".html")
 	app := fiber.New(fiber.Config{
 		Views: engine,
 	})
-
-	// Static files
-	app.Static("/", "./ui/static")
 
 	// Log middleware config
 	app.Use(logger.New())
@@ -25,6 +30,9 @@ func main() {
 	app.Get("/snippet", showSnippet)
 	app.Post("/snippet/create", createSnippet)
 
-	log.Println("Starting server on :4000")
-	app.Listen(":4000")
+	// Static files
+	app.Static("/", "./ui/static")
+
+	log.Printf("Starting server on %s", *port)
+	log.Fatal(app.Listen(*port))
 }

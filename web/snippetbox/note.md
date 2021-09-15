@@ -7,3 +7,5 @@
 
 ## How to run the app
 - `go run ./cmd/web`
+- Using the `-addr` flag
+  - `go run ./cmd/web -addr=":3000"`
