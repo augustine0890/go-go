@@ -1,50 +1,27 @@
 package main
 
 import (
+
+	// "html/template"
 	"fmt"
-	"html/template"
-	"log"
-	"net/http"
 	"strconv"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
-		return
-	}
-
-	ts, err := template.ParseFiles("./ui/html/home.page.html")
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
-		return
-	}
-
-	err = ts.Execute(w, nil)
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Internal Server Error", 500)
-	}
+func home(c *fiber.Ctx) error {
+	return c.Render("home.page", fiber.Map{})
 }
 
-func showSnippet(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+func showSnippet(c *fiber.Ctx) error {
+	id, err := strconv.Atoi(c.Query("id"))
 	if err != nil || id < 0 {
-		http.NotFound(w, r)
-		return
+		return c.SendStatus(400)
 	}
-
-	fmt.Fprintf(w, "Display a specific snippet with ID %d...", id)
+	msg := fmt.Sprintf("Display a specific snippet with ID %d...", id)
+	return c.SendString(msg)
 }
 
-func createSnippet(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		w.Header().Set("Allow", http.MethodPost)
-		// Send 405 status code and "Method Not Allowed"
-		http.Error(w, "Method Not Allowed", 405)
-		return
-	}
-
-	w.Write([]byte("Create a new snippet..."))
+func createSnippet(c *fiber.Ctx) error {
+	return c.SendString("Create a new snippet...")
 }

@@ -2,16 +2,22 @@ package main
 
 import (
 	"log"
-	"net/http"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html"
 )
 
 func main() {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", home)
-	mux.HandleFunc("/snippet", showSnippet)
-	mux.HandleFunc("/snippet/create", createSnippet)
+	// Initialize html tamplate engine
+	engine := html.New("./ui/html", ".html")
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
+
+	app.Get("/", home)
+	app.Get("/snippet", showSnippet)
+	app.Post("/snippet/create", createSnippet)
 
 	log.Println("Starting server on :4000")
-	err := http.ListenAndServe(":4000", mux)
-	log.Fatal(err)
+	app.Listen(":4000")
 }
