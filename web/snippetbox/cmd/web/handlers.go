@@ -1,13 +1,11 @@
 package main
 
 import (
-
-	// "html/template"
+	"errors"
 	"fmt"
-	"log"
-	"strconv"
-
+	"snippetbox/pkg/models"
 	"snippetbox/pkg/models/mysql"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -28,13 +26,23 @@ func home() fiber.Handler {
 	}
 }
 
-func showSnippet(c *fiber.Ctx) error {
-	id, err := strconv.Atoi(c.Query("id"))
-	if err != nil || id < 0 {
-		return c.SendStatus(400)
+func showSnippet(s service) fiber.Handler {
+	return func(ctx *fiber.Ctx) error {
+		id, err := strconv.Atoi(ctx.Query("id"))
+		if err != nil || id < 0 {
+			return ctx.SendStatus(400)
+		}
+		s, err := s.repo.Get(id)
+		if err != nil {
+			if errors.Is(err, models.ErrNoRecord) {
+				return ctx.Status(fiber.StatusNotFound).SendString("Record not found")
+			} else {
+				return err
+			}
+		}
+		return ctx.Status(fiber.StatusOK).JSON(s)
+
 	}
-	msg := fmt.Sprintf("Display a specific snippet with ID %d...", id)
-	return c.SendString(msg)
 }
 
 func createSnippet(s service) fiber.Handler {
@@ -44,7 +52,6 @@ func createSnippet(s service) fiber.Handler {
 		expires := "7"
 
 		id, err := s.repo.Insert(title, content, expires)
-		log.Println(err)
 		if err != nil {
 			return ctx.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
 		}
