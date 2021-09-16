@@ -4,13 +4,28 @@ import (
 
 	// "html/template"
 	"fmt"
+	"log"
 	"strconv"
+
+	"snippetbox/pkg/models/mysql"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func home(c *fiber.Ctx) error {
-	return c.Render("home.page", fiber.Map{})
+type service struct {
+	repo mysql.Repository
+}
+
+func NewService(r mysql.Repository) service {
+	return service{
+		repo: r,
+	}
+}
+
+func home() fiber.Handler {
+	return func(ctx *fiber.Ctx) error {
+		return ctx.Render("home.page", fiber.Map{})
+	}
 }
 
 func showSnippet(c *fiber.Ctx) error {
@@ -22,6 +37,18 @@ func showSnippet(c *fiber.Ctx) error {
 	return c.SendString(msg)
 }
 
-func createSnippet(c *fiber.Ctx) error {
-	return c.SendString("Create a new snippet...")
+func createSnippet(s service) fiber.Handler {
+	return func(ctx *fiber.Ctx) error {
+		title := "0 snail"
+		content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\n\n– Kobayashi Issa"
+		expires := "7"
+
+		id, err := s.repo.Insert(title, content, expires)
+		log.Println(err)
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
+		}
+
+		return ctx.Redirect(fmt.Sprintf("/snippet?id=%d", id), 301)
+	}
 }
