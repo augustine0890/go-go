@@ -9,3 +9,10 @@
 - `go run ./cmd/web`
 - Using the `-addr` flag
   - `go run ./cmd/web -addr=":3000"`
+
+## Database
+### Working with Transactions
+- Transactions are also super-useful if you want to execute multiple transactions at single atomic action.
+- `tx.Rollback()` method in the event of any errors, the transaction ensures that either:
+  - All statements are executed successfully or
+  - No statements are executed an the database remains unchanged
