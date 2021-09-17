@@ -20,9 +20,14 @@ func NewService(r mysql.Repository) service {
 	}
 }
 
-func home() fiber.Handler {
+func home(s service) fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
-		return ctx.Render("home.page", fiber.Map{})
+		s, err := s.repo.Latest()
+		if err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
+		}
+		return ctx.Status(fiber.StatusOK).JSON(s)
+		// return ctx.Render("home.page", fiber.Map{})
 	}
 }
 
@@ -40,8 +45,8 @@ func showSnippet(s service) fiber.Handler {
 				return err
 			}
 		}
-		return ctx.Status(fiber.StatusOK).JSON(s)
 
+		return ctx.Status(fiber.StatusOK).JSON(s)
 	}
 }
 
