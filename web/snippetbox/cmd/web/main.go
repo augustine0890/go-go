@@ -32,6 +32,9 @@ func main() {
 
 	// Initialize html tamplate engine
 	engine := html.New("./ui/html", ".html")
+	// Debug will print each template that is parsed, good for debugging
+	engine.Debug(true) // Optional. Default: false
+
 	app := fiber.New(fiber.Config{
 		AppName: "SnippetBox",
 		Views:   engine,
