@@ -46,7 +46,10 @@ func showSnippet(s service) fiber.Handler {
 			}
 		}
 
-		return ctx.Status(fiber.StatusOK).JSON(s)
+		return ctx.Render("show.page", &fiber.Map{
+			"snippet": s,
+		})
+		// return ctx.Status(fiber.StatusOK).JSON(s)
 	}
 }
 
