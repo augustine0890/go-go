@@ -48,6 +48,7 @@ func showSnippet(s service) fiber.Handler {
 			}
 		}
 
+		fmt.Println(row.FormatCreatedDate())
 		return ctx.Render("show.page", &fiber.Map{
 			"snippet": row,
 		})
