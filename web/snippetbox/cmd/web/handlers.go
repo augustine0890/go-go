@@ -26,6 +26,8 @@ func home(s service) fiber.Handler {
 		if err != nil {
 			return ctx.Status(fiber.StatusInternalServerError).SendString("Internal Server Error")
 		}
+		// panic("oops! something went wrong") // Deliberate panic
+
 		// return ctx.Status(fiber.StatusOK).JSON(s)
 		return ctx.Render("home.page", &fiber.Map{
 			"snippets": rows,

@@ -16,3 +16,7 @@
 - `tx.Rollback()` method in the event of any errors, the transaction ensures that either:
   - All statements are executed successfully or
   - No statements are executed an the database remains unchanged
+
+## Panic Recovery
+- Panic Server will log a stack trace to the server error log, unwind the stack for the affected goroutine and close the underlying HTTP connection.
+- Do not terminate the application --> any panic will not bring down the server.

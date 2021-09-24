@@ -3,8 +3,10 @@ package main
 import "github.com/gofiber/fiber/v2"
 
 func Routes(route fiber.Router, s service) {
-	route.Get("/", home(s))
-	route.Get("/snippet", showSnippet(s))
-	route.Post("/snippet/create", createSnippet(s))
+	r := route.Group("", recoverPanic())
+
+	r.Get("/", home(s))
+	r.Get("/snippet", showSnippet(s))
+	r.Post("/snippet/create", createSnippet(s))
 
 }
