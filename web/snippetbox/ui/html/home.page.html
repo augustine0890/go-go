@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>Home - Snippetbox</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel='shortcut icon' href='/img/favicon.ico' type='image/x-icon'>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700'>
+  </head>
+  <body>
+    <header>
+      <h1><a href='/'>Snippetbox</a></h1>
+    </header>
+    <nav>
+      <a href='/'>Home</a>
+    </nav>
+    <main>
+      <h2>Latest Snippets</h2>
+      <div>
+        {{if .snippets}}
+        <table>
+          <tr>
+            <th>Title</th>
+            <th>Created</th>
+            <th>ID</th>
+          </tr>
+          {{range .snippets}}
+          <tr>
+            <td><a href="/snippet?id={{.ID}}">{{.Title}}</a></td>
+            <td>{{.FormatCreatedDate}}</td>
+            <td>#{{.ID}}</td>
+          </tr>
+          {{end}}
+        </table>
+      {{else}}
+        <p>There's nothing to see here... yet!</p>
+      {{end}}
+      </div>
+    </main>
+    {{template "footer" .}}
+    <script src="/js/main.js" type="text/javascript"></script>
+  </body>
+</html>
