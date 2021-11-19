@@ -23,17 +23,20 @@ func greetCustomer(w http.ResponseWriter, r *http.Request) {
 
 func getCurrentTime(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
-	if r.URL.Query().Get("tz") == "" {
-		time := map[string]string{
-			"current_time": time.Now().Local().Format(time.RFC3339),
-		}
-		json.NewEncoder(w).Encode(time)
+	res := make(map[string]interface{})
+	timezones := r.URL.Query().Get("tz")
+	if timezones == "" {
+		res["current_time"] = time.Now().Local().String()
+		json.NewEncoder(w).Encode(res)
 	} else {
-		tzs := strings.Split(r.URL.Query().Get("tz"), ",")
-		res := make(map[string]interface{})
+		tzs := strings.Split(timezones, ",")
 		for _, tz := range tzs {
-			loc, _ := time.LoadLocation(tz)
+			loc, err := time.LoadLocation(tz)
+			if err != nil {
+				w.WriteHeader(http.StatusNotFound)
+				w.Write([]byte(fmt.Sprintf("invalid timezones %s in input", tz)))
+				return
+			}
 			res[tz] = time.Now().In(loc)
 		}
 		json.NewEncoder(w).Encode(res)
