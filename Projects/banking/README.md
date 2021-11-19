@@ -9,3 +9,7 @@
 - JWT Tokens
 - Banking-Auth microservice based on OAuth standard
 - Unit test for routes and other components using mocks and state based tests
+
+## Structure
+### Router Basic
+- Incoming Request (`/customer`) --> Request Multiplexer/Router (matches registered patterns) --> Customer Route
