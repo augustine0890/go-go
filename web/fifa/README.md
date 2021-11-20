@@ -6,3 +6,11 @@
 
 ## Running tests
 - `go test -v ./handlers/`
+
+## Running with Docker
+- To build the image from the Dockerfile
+  - `docker build -t fifa .`
+- To start an interactive shell, run:
+  - `docker run -it --rm --name run-fifa fifa`
+- From inside the shell, run the tests with:
+  - `go test handlers/*`
