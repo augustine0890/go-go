@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -16,39 +14,15 @@ func main() {
 
 	db.Migrator().DropTable(&User{})
 	db.AutoMigrate(&User{})
-
-	for _, user := range users {
-		db.Create(&user)
-	}
-	u := User{Username: "tmacmillan"}
-	// Querying
-	// db.First(&u)
-	// db.Last(&u)
-
-	// Updating
-	db.Where(&u).First(&u)
-	u.LastName = "Beeblebrox"
-	db.Save(&u)
-
-	user := User{}
-	db.Where(&u).First(&user)
-
-	// Deleting
-	db.Where(&User{Username: "mrobot"}).Delete(&User{})
-
-	fmt.Println(user)
 }
 
 type User struct {
-	ID        int
-	Username  string
-	FirstName string
+	gorm.Model
+	Username  string `gorm:"type:varchar(15);unique_index"`
+	FirstName string `gorm:"size:100"`
 	LastName  string
 }
 
-var users []User = []User{
-	{Username: "august", FirstName: "Augustine", LastName: "Nguyen"},
-	{Username: "fperfact", FirstName: "Ford", LastName: "Prefect"},
-	{Username: "tmacmillan", FirstName: "Tricia", LastName: "MacMillan"},
-	{Username: "mrobot", FirstName: "Marvin", LastName: "Robot"},
-}
+// func (u User) TableName() string {
+// return "stakeholders"
+// }
