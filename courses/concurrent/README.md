@@ -5,6 +5,7 @@
 - Concurrency: have multiple tasks (Don't need at the same time)
 - Parallelism: execute multiple tasks simultaneously
 - Concurrency is a prerequisite for parallel execution
+
 ## Goroutines
 - Thread:
   - Ability of OS to run the tasks
@@ -16,3 +17,11 @@
   - Have own execution stack
   - Variable stack space (starts @2KB)
   - Manage by Go runtime
+
+## The `Sync` Package
+- Coordinating tasks: `WaitGroups`
+
+`sync.WaitGroup`
+- A WaitGroup waits for a collection of goroutines to finish.
+
+- Shared memory: `Mutexes`
