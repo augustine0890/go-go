@@ -25,3 +25,5 @@
 - A WaitGroup waits for a collection of goroutines to finish.
 
 - Shared memory: `Mutexes`
+- `Mutex`: a mutal exclusion lock, ensurses that only one task can be accessing the mutex at one time.
+- `RWMutex`: allows multiple readers to access the protected code, but only one task can write to mutex.

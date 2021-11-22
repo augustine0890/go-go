@@ -12,25 +12,25 @@ var rnd = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 func main() {
 	wg := &sync.WaitGroup{}
+	m := &sync.RWMutex{}
 	for i := 0; i < 10; i++ {
 		id := rnd.Intn(10) + 1
 		wg.Add(2)
-		go func(id int, wg *sync.WaitGroup) {
-			if b, ok := queryCache(id); ok {
+		go func(id int, wg *sync.WaitGroup, m *sync.RWMutex) {
+			if b, ok := queryCache(id, m); ok {
 				fmt.Println("from cache")
 				fmt.Println(b)
 			}
 			wg.Done()
-		}(id, wg)
+		}(id, wg, m)
 
-		go func(id int, wg *sync.WaitGroup) {
-			if b, ok := queryDatabase(id); ok {
+		go func(id int, wg *sync.WaitGroup, m *sync.RWMutex) {
+			if b, ok := queryDatabase(id, m); ok {
 				fmt.Println("from database")
-				cache[id] = b
 				fmt.Println(b)
 			}
 			wg.Done()
-		}(id, wg)
+		}(id, wg, m)
 		// This is waiting for goroutine to finish (complete). The program execution completes when the main function exits
 		// But we don't guarantee all of go routines to complete
 		// time.Sleep(time.Microsecond * 150)
@@ -39,16 +39,21 @@ func main() {
 	wg.Wait()
 }
 
-func queryCache(id int) (Book, bool) {
+func queryCache(id int, m *sync.RWMutex) (Book, bool) {
+	m.RLock()
 	b, ok := cache[id]
+	m.RUnlock()
 	return b, ok
 }
 
-func queryDatabase(id int) (Book, bool) {
+func queryDatabase(id int, m *sync.RWMutex) (Book, bool) {
 	time.Sleep(time.Microsecond * 300)
 	for _, b := range books {
 		// goroutine is trying to access the same shared memory.
 		if b.ID == id {
+			m.Lock()
+			cache[id] = b
+			m.Unlock()
 			return b, true
 		}
 	}
