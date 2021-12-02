@@ -27,3 +27,15 @@
 - Shared memory: `Mutexes`
 - `Mutex`: a mutal exclusion lock, ensurses that only one task can be accessing the mutex at one time.
 - `RWMutex`: allows multiple readers to access the protected code, but only one task can write to mutex.
+
+## Channels
+- `Don't communicate by sharing memory, share memory by communicationg` _Bob Pike
+
+- Create a channel
+```go
+ch := make(chan int)
+```
+- Create a buffered channel
+```go
+ch := make(chan int, 5) // can store five messages inside of the channel
+```
