@@ -1,1 +1,2 @@
-# Basic API to interact with Ethereum Blockchain
+# Basic API to interact with Blockchain Network
+- Retrieve the latest block from blockchain.
