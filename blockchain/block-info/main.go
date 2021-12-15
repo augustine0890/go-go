@@ -2,6 +2,7 @@ package main
 
 import (
 	"block-info/handlers"
+	"block-info/middleware"
 	"log"
 	"net/http"
 	"os"
@@ -36,5 +37,7 @@ func main() {
 
 	router.HandleFunc("/api/v1/polygon/latest", clientHandler.GetLatestBlock).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	logger := middleware.Logging(router)
+
+	log.Fatal(http.ListenAndServe(":8080", logger))
 }
