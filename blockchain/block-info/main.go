@@ -31,9 +31,10 @@ func main() {
 	// Create router
 	router := mux.NewRouter()
 
-	h := handlers.ClientHandler{conn}
+	var clientHandler *handlers.ClientHandler
+	clientHandler = handlers.NewClientHandler(conn)
 
-	router.HandleFunc("/api/v1/polygon/latest", h.getLatestBlock()).Methods("GET")
+	router.HandleFunc("/api/v1/polygon/latest", clientHandler.GetLatestBlock).Methods("GET")
 
-	http.ListenAndServe(":8080", router)
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
