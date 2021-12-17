@@ -35,8 +35,11 @@ func main() {
 	var clientHandler *handlers.ClientHandler
 	clientHandler = handlers.NewClientHandler(conn)
 
-	router.HandleFunc("/api/v1/polygon/latest", clientHandler.GetLatestBlock).Methods("GET")
-
+	s := router.PathPrefix("/api/v1/polygon").Subrouter()
+	// Retrieves the latest block
+	s.HandleFunc("/latest", clientHandler.GetLatestBlock).Methods("GET")
+	// Retrieve imformation a given transaction hash
+	s.HandleFunc("/get-tx", clientHandler.GetTxByHash).Methods("GET")
 	logger := middleware.Logging(router)
 
 	log.Fatal(http.ListenAndServe(":8080", logger))

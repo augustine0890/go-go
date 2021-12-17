@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/big"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
 )
 
@@ -44,4 +45,27 @@ func GetLatestBlock(client *ethclient.Client) *models.Block {
 		})
 	}
 	return blockRes
+}
+
+func GetTxByHash(client *ethclient.Client, hash common.Hash) *models.Transaction {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	tx, pending, err := client.TransactionByHash(context.Background(), hash)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return &models.Transaction{
+		Hash:     tx.Hash().String(),
+		Value:    tx.Value().String(),
+		Gas:      tx.Gas(),
+		GasPrice: tx.GasPrice().Uint64(),
+		Nonce:    tx.Nonce(),
+		To:       tx.To().String(),
+		Pending:  pending,
+	}
 }
