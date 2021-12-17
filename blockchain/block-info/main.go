@@ -40,6 +40,9 @@ func main() {
 	s.HandleFunc("/latest", clientHandler.GetLatestBlock).Methods("GET")
 	// Retrieve imformation a given transaction hash
 	s.HandleFunc("/get-tx", clientHandler.GetTxByHash).Methods("GET")
+	// Retrieve balance of address
+	s.HandleFunc("/balance", clientHandler.GetAddressBalance).Methods("GET")
+
 	logger := middleware.Logging(router)
 
 	log.Fatal(http.ListenAndServe(":8080", logger))

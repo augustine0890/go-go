@@ -33,9 +33,9 @@ type HashResponse struct {
 }
 
 // BlanceResponse
-type BlanceResponse struct {
+type BalanceResponse struct {
 	Address string `json:"address"`
-	Blance  string `json:"blance"`
+	Balance string `json:"balance"`
 	Symbol  string `json:"symbol"`
 	Units   string `json:"units"`
 }

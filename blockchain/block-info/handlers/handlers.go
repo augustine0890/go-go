@@ -4,6 +4,7 @@ import (
 	"block-info/models"
 	"block-info/modules"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -52,5 +53,35 @@ func (h *ClientHandler) GetTxByHash(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&models.Error{
 		Code:    404,
 		Message: "Tx Not Found!",
+	})
+}
+
+func (h *ClientHandler) GetAddressBalance(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	address := r.URL.Query().Get("address")
+	if address == "" {
+		json.NewEncoder(w).Encode(&models.Error{
+			Code:    400,
+			Message: "Empty Address",
+		})
+		return
+	}
+
+	balance, err := modules.GetAddressBalance(h.conn, address)
+	if err != nil {
+		log.Fatal(err)
+		json.NewEncoder(w).Encode(&models.Error{
+			Code:    500,
+			Message: "Internal server error",
+		})
+		return
+	}
+
+	json.NewEncoder(w).Encode(&models.BalanceResponse{
+		Address: address,
+		Balance: balance,
+		Symbol:  "MATIC",
+		Units:   "Wei",
 	})
 }
