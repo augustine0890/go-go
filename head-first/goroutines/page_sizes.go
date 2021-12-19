@@ -5,10 +5,19 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
-	response, err := http.Get("https://example.com")
+	go responseSize("https://example.com/")
+	go responseSize("https://golang.org/")
+	go responseSize("https://golang.org/doc")
+	time.Sleep(3 * time.Second)
+}
+
+func responseSize(url string) {
+	fmt.Println("Getting", url)
+	response, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -19,5 +28,8 @@ func main() {
 		log.Fatal(err)
 	}
 	// Conversion from a slice of `byte` values to a `string`
-	fmt.Println(string(body))
+	// fmt.Println(string(body))
+	// Page URLs and page sizes in bytes
+	fmt.Println(len(body)) // The size of the slice of bytes
+
 }
