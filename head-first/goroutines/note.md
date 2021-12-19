@@ -6,3 +6,7 @@
 - A computer with only one processor can only run one task at a time.
 - Concurrent tasks are called `goroutines`.
 - `Goroutines` allow for concurrency: pausing one task to work on others. And in some situations they allow parallelism: working on multiple tasks simultaneously.
+
+# Channels
+- There is a way to communicate between goroutines --> `channels`.
+- They ensure the sending goroutine has sent the value before the receiving goroutine attempts to use it.
