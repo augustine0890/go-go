@@ -85,3 +85,35 @@ func (h *ClientHandler) GetAddressBalance(w http.ResponseWriter, r *http.Request
 		Units:   "Wei",
 	})
 }
+
+func (h *ClientHandler) SendEth(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	decoder := json.NewDecoder(r.Body)
+	var t models.TransferRequest
+	err := decoder.Decode(&t)
+
+	if err != nil {
+		log.Fatal(err)
+		json.NewEncoder(w).Encode(&models.Error{
+			Code:    400,
+			Message: "Malformed request",
+		})
+		return
+	}
+
+	_hash, err := modules.TransferEth(h.conn, t.PrivKey, t.To, t.Amount)
+
+	if err != nil {
+		log.Fatal(err)
+		json.NewEncoder(w).Encode(&models.Error{
+			Code:    500,
+			Message: "Internal server error",
+		})
+		return
+	}
+
+	json.NewEncoder(w).Encode(&models.HashResponse{
+		Hash: _hash,
+	})
+}

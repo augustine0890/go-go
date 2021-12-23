@@ -22,9 +22,10 @@ func GetEnv(key string) string {
 }
 
 func main() {
-	polygon := GetEnv("POLYGON")
+	// polygon := GetEnv("POLYGON")
+	rinkeby := GetEnv("RINKEBY")
 
-	conn, err := ethclient.Dial(polygon)
+	conn, err := ethclient.Dial(rinkeby)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,6 +43,8 @@ func main() {
 	s.HandleFunc("/get-tx", clientHandler.GetTxByHash).Methods("GET")
 	// Retrieve balance of address
 	s.HandleFunc("/balance", clientHandler.GetAddressBalance).Methods("GET")
+	// Send the eth/matic
+	s.HandleFunc("/send", clientHandler.SendEth).Methods("POST")
 
 	logger := middleware.Logging(router)
 
