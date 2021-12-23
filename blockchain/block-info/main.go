@@ -22,10 +22,10 @@ func GetEnv(key string) string {
 }
 
 func main() {
-	// polygon := GetEnv("POLYGON")
-	rinkeby := GetEnv("RINKEBY")
+	polygon := GetEnv("POLYGON")
+	// rinkeby := GetEnv("RINKEBY")
 
-	conn, err := ethclient.Dial(rinkeby)
+	conn, err := ethclient.Dial(polygon)
 	if err != nil {
 		log.Fatal(err)
 	}

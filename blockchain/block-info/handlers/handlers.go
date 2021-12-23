@@ -81,7 +81,7 @@ func (h *ClientHandler) GetAddressBalance(w http.ResponseWriter, r *http.Request
 	json.NewEncoder(w).Encode(&models.BalanceResponse{
 		Address: address,
 		Balance: balance,
-		Symbol:  "MATIC",
+		Symbol:  "ETH/MATIC",
 		Units:   "Wei",
 	})
 }

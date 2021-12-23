@@ -16,7 +16,7 @@ import (
 func GetLatestBlock(client *ethclient.Client) *models.Block {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 	}()
 
@@ -25,7 +25,7 @@ func GetLatestBlock(client *ethclient.Client) *models.Block {
 	blockNumer := big.NewInt(header.Number.Int64())
 	block, err := client.BlockByNumber(ctx, blockNumer)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	blockRes := &models.Block{
@@ -53,13 +53,13 @@ func GetLatestBlock(client *ethclient.Client) *models.Block {
 func GetTxByHash(client *ethclient.Client, hash common.Hash) *models.Transaction {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 	}()
 
 	tx, pending, err := client.TransactionByHash(context.Background(), hash)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	return &models.Transaction{
@@ -85,7 +85,7 @@ func GetAddressBalance(client *ethclient.Client, address string) (string, error)
 func TransferEth(client *ethclient.Client, privKey string, to string, amount int64) (string, error) {
 	defer func() {
 		if err := recover(); err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 	}()
 
