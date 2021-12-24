@@ -14,3 +14,4 @@
 - By default, sending a value on a channel blocks (pauses) the current goroutine until that value is received. Attempting to receive a value also blocks the current goroutine until a value is sent on that channel.
 - Channels are created by calling the built-in `make` function.
 - Each channel only carries values of one particular type.
+- Channels can carray composite types like slices, maps, and strucs.

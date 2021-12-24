@@ -7,18 +7,24 @@ import (
 	"net/http"
 )
 
+type Page struct {
+	URL  string
+	Size int
+}
+
 func main() {
-	sizes := make(chan int)
+	pages := make(chan Page)
 	urls := []string{"https://example.com/", "https://golang.org/", "https://golang.org/doc"}
 	for _, url := range urls {
-		go responseSize(url, sizes)
+		go responseSize(url, pages)
 	}
 	for i := 0; i < len(urls); i++ {
-		fmt.Println(<-sizes)
+		page := <-pages
+		fmt.Printf("%s: %d\n", page.URL, page.Size)
 	}
 }
 
-func responseSize(url string, channel chan int) {
+func responseSize(url string, channel chan Page) {
 	fmt.Println("Getting", url)
 	response, err := http.Get(url)
 	if err != nil {
@@ -33,6 +39,6 @@ func responseSize(url string, channel chan int) {
 	// Conversion from a slice of `byte` values to a `string`
 	// fmt.Println(string(body))
 	// Page URLs and page sizes in bytes
-	channel <- len(body) // The size of the slice of bytes
+	channel <- Page{URL: url, Size: len(body)} // The size of the slice of bytes
 
 }
