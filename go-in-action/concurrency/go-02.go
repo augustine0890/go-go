@@ -12,7 +12,7 @@ var wg sync.WaitGroup
 func main() {
 	// Allocate 1 logical memory processors for scheduler to used
 	// Change the runtime to allocate a logical processor for every available physical processor.
-	runtime.GOMAXPROCS(1)
+	runtime.GOMAXPROCS(2)
 
 	wg.Add(2)
 

@@ -9,7 +9,9 @@ import (
 
 func main() {
 	// Allocate 1 logical processor for the scheduler to use
-	runtime.GOMAXPROCS(1)
+	// fmt.Println("CPU Num:", runtime.NumCPU()) // number of physical processors that are available
+
+	runtime.GOMAXPROCS(2)
 
 	// wg is used to wait for the program to finish
 	// Add a count of two, one for each goroutine
