@@ -18,3 +18,7 @@
 
 ## Locking shared resources
 - Atomic functions provide low-level locking mechanism for synchronizing access to integers and pointers.
+
+## Mutexes
+- A mutex is named after the concept of mutual exclusion.
+- A mutex is used to create a critical section around code that ensures only one goroutine at a time can excute that code section.
