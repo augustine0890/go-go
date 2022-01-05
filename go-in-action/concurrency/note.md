@@ -15,3 +15,6 @@
 ## Race conditions
 - When two or more goroutines have unsynchronized access to a shared resources and attempt to read and write to that resource at the same time --> `race condition`.
 - Race detector: `go run -race main.go`
+
+## Locking shared resources
+- Atomic functions provide low-level locking mechanism for synchronizing access to integers and pointers.

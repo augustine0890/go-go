@@ -6,11 +6,12 @@ import (
 	"fmt"
 	"runtime"
 	"sync"
+	"sync/atomic"
 )
 
 var (
 	// counter is a variable incremented by all goroutines
-	counter int
+	counter int64
 	// wg is used to wait for the program to finish
 	wg sync.WaitGroup
 )
@@ -33,15 +34,16 @@ func incCounter(id int) {
 
 	for count := 0; count < 2; count++ {
 		// Capture the value of Counter
-		value := counter
-
+		// value := counter
+		// Only one goroutine can perform and complete add operation at a time
+		atomic.AddInt64(&counter, 1)
 		// Yield the thread and be placed back in queue
 		runtime.Gosched()
 
 		// Increment out local value of Counter
-		value++
+		// value++
 
 		// Store the value back into Counter`
-		counter = value
+		// counter = value
 	}
 }
