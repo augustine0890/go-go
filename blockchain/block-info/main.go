@@ -22,10 +22,11 @@ func GetEnv(key string) string {
 }
 
 func main() {
-	polygon := GetEnv("POLYGON")
+	// polygon := GetEnv("POLYGON")
+	bsc := GetEnv("BSC")
 	// rinkeby := GetEnv("RINKEBY")
 
-	conn, err := ethclient.Dial(polygon)
+	conn, err := ethclient.Dial(bsc) // polygon
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,7 +37,7 @@ func main() {
 	var clientHandler *handlers.ClientHandler
 	clientHandler = handlers.NewClientHandler(conn)
 
-	s := router.PathPrefix("/api/v1/polygon").Subrouter()
+	s := router.PathPrefix("/api/v1/").Subrouter()
 	// Retrieves the latest block
 	s.HandleFunc("/latest", clientHandler.GetLatestBlock).Methods("GET")
 	// Retrieve imformation a given transaction hash
