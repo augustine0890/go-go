@@ -72,3 +72,7 @@
 - A pointer is specific to what type of address it can store.
 - The `*` operator can be used to assign a pointer the type of the value its address holds.
 - The `*` operator can also be used to dereference a pointer and assign a new value.
+
+## Select
+- The `select` statement is used to choose from multiple send/receive channel operation.
+- The `select` statement blocks until one of the send/receive operations is ready. If multiple operations are ready, one of them is chosen at random.
