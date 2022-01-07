@@ -24,4 +24,7 @@
 - A mutex is used to create a critical section around code that ensures only one goroutine at a time can excute that code section.
 
 ## Channels
+- Channels provide an intrinsic way to safely share data between two goroutines.
 - An _unbuffered channel_ is a channel with no capacity to hold any value before it's received.
+- A _buffered channel_ is a channel with a capacity to hold one or more values before they're received.
+- An unbuffered channel provides a guarantee that an exchange between two goroutines is performed at the instant the send and receive take place. A buffered channel has no such guarantee.
