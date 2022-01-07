@@ -22,3 +22,6 @@
 ## Mutexes
 - A mutex is named after the concept of mutual exclusion.
 - A mutex is used to create a critical section around code that ensures only one goroutine at a time can excute that code section.
+
+## Channels
+- An _unbuffered channel_ is a channel with no capacity to hold any value before it's received.
