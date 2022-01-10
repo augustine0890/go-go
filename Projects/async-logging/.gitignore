@@ -1,0 +1,21 @@
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# nyc test coverage
+.nyc_output
+
+# Bower dependency directory (https://bower.io/)
+bower_components
+
+# Output of 'npm pack'
+*.tgz
+
+# dotenv environment variables file
+.env
