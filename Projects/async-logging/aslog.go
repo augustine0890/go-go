@@ -2,9 +2,12 @@
 package aslog
 
 import (
+	"fmt"
 	"io"
 	"os"
+	"strings"
 	"sync"
+	"time"
 )
 
 // Aslog is a type that defines a logger. It can be used to write log messages synchronously (via the Write method)
@@ -25,6 +28,62 @@ func New(w io.Writer) *Alog {
 		w = os.Stdout
 	}
 	return &Alog{
-		dest: w,
+		dest:    w,
+		msgCh:   make(chan string),
+		errorCh: make(chan error),
+		m:       &sync.Mutex{},
 	}
+}
+
+// Start begins the message loop for the asynchronous logger. It should be initiated as a goroutine to prevent the caller from being blocked
+func (al Alog) Start() {
+	for {
+		msg := <-al.msgCh
+		go al.write(msg, nil)
+	}
+}
+
+func (al Alog) formatMessage(msg string) string {
+	if !strings.HasSuffix(msg, "\n") {
+		msg += "\n"
+	}
+	return fmt.Sprintf("[%v] - %v", time.Now().Format("2006-01-02 15:04:05"), msg)
+}
+
+func (al Alog) write(msg string, wg *sync.WaitGroup) {
+	al.m.Lock()
+	defer al.m.Unlock()
+	_, err := al.dest.Write([]byte(al.formatMessage(msg)))
+	if err != nil {
+		go func(err error) {
+			al.errorCh <- err
+		}(err)
+	}
+}
+
+func (al Alog) shutdown() {
+
+}
+
+// MessageChannel returns a channel that accepts messages that should be written to the log
+func (al Alog) MessageChannel() chan string {
+	return al.msgCh
+}
+
+// ErrorChannel returns a channel that will be pupulated when an error is raised during a write operation
+// This channel should always be monitored in some way to prevent deadlock goroutines from being Generated
+// when errors occur
+func (al Alog) ErrorChannel() chan error {
+	return al.errorCh
+}
+
+// Stop shuts down the logger. It will wait for all pending messages to be written and then return
+// The logger will no longer function after this method has been called.
+func (al Alog) Stop() {
+
+}
+
+// Write synchronously sends the mesaage to the log output
+func (al Alog) Write(msg string) (int, error) {
+	return al.dest.Write([]byte(al.formatMessage(msg)))
 }
