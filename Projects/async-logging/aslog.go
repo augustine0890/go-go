@@ -16,9 +16,9 @@ type Alog struct {
 	dest               io.Writer
 	m                  *sync.Mutex
 	msgCh              chan string
-	errorCh            chan error
 	shutdownCh         chan struct{}
 	shutdownCompleteCh chan struct{}
+	errorCh            chan error
 }
 
 // New creates a new Alog object that writes to the provided io.Writer
@@ -29,11 +29,11 @@ func New(w io.Writer) *Alog {
 	}
 	return &Alog{
 		dest:               w,
-		msgCh:              make(chan string),
-		errorCh:            make(chan error),
 		m:                  &sync.Mutex{},
+		msgCh:              make(chan string),
 		shutdownCh:         make(chan struct{}),
 		shutdownCompleteCh: make(chan struct{}),
+		errorCh:            make(chan error),
 	}
 }
 
@@ -45,7 +45,7 @@ loop:
 		select {
 		case msg := <-al.msgCh:
 			wg.Add(1)
-			go al.write(msg, nil)
+			go al.write(msg, wg)
 		case <-al.shutdownCh:
 			wg.Wait()
 			al.shutdown()
@@ -62,6 +62,7 @@ func (al Alog) formatMessage(msg string) string {
 }
 
 func (al Alog) write(msg string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	al.m.Lock()
 	defer al.m.Unlock()
 	_, err := al.dest.Write([]byte(al.formatMessage(msg)))
