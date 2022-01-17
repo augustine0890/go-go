@@ -18,6 +18,21 @@ func (th TwitterHandler) RedirectUrl() string {
 	return fmt.Sprintf("https://www.twitter.com/%s", cleanHandler)
 }
 
+type Identifiable interface {
+	ID() string
+}
+
+type SocialSecurityNumber string
+
+// Return the interface
+func NewSocialSecurityNumber(value string) Identifiable {
+	return SocialSecurityNumber(value)
+}
+
+func (ssn SocialSecurityNumber) ID() string {
+	return string(ssn)
+}
+
 type Name struct {
 	first string
 	last  string
@@ -27,23 +42,27 @@ type Employee struct {
 }
 
 type Person struct {
-	ID string
 	Name
 	twitterHandler TwitterHandler
+	Identifiable
 }
 
-func NewPerson(firstName, lastName string) Person {
+func NewPerson(firstName, lastName string, identifiable Identifiable) Person {
 	return Person{
-		ID: "1123",
 		Name: Name{
 			first: firstName,
 			last:  lastName,
 		},
+		Identifiable: identifiable,
 	}
 }
 
 func (p *Person) FullName() string {
 	return fmt.Sprintf("%s %s", p.first, p.last)
+}
+
+func (p *Person) ID() string {
+	return fmt.Sprintf("Person's identifiable: %s0", p.Identifiable.ID())
 }
 
 func (p *Person) SetTwitterHandler(handler TwitterHandler) error {
