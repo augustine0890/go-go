@@ -13,9 +13,16 @@ func main() {
 		fmt.Printf("An error occurred setting twitter handler: %s\n", err.Error())
 	}
 
-	fmt.Println(p.TwitterHandler())
-	fmt.Println(p.TwitterHandler().RedirectUrl())
-	fmt.Println(p.ID())
-	fmt.Println(p.Country())
-	fmt.Println(p.FullName())
+	// fmt.Println(p.TwitterHandler())
+	// fmt.Println(p.TwitterHandler().RedirectUrl())
+	// fmt.Println(p.ID())
+	// fmt.Println(p.Country())
+	// fmt.Println(p.FullName())
+
+	eu1 := organization.NewEuropeanUnionIdentifier("12345", "France")
+	eu2 := organization.NewEuropeanUnionIdentifier("12345", "France")
+
+	if eu1 == eu2 {
+		fmt.Println("We match")
+	}
 }

@@ -44,14 +44,14 @@ func (ssn SocialSecurityNumber) Country() string {
 
 type EuropeanUnionIdentifier struct {
 	id      string
-	country string
+	country []string
 }
 
 // Return the interface
 func NewEuropeanUnionIdentifier(id, country string) Citizen {
 	return EuropeanUnionIdentifier{
 		id:      id,
-		country: country,
+		country: []string{country},
 	}
 }
 
