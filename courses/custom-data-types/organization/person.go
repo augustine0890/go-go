@@ -3,6 +3,7 @@ package organization
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -55,6 +56,13 @@ func NewEuropeanUnionIdentifier(id interface{}, country string) Citizen {
 			id:      v,
 			country: []string{country},
 		}
+	case int:
+		return EuropeanUnionIdentifier{
+			id:      strconv.Itoa(v),
+			country: []string{country},
+		}
+	default:
+		panic("using an invalid type ot initalize EU Identifier")
 	}
 }
 
