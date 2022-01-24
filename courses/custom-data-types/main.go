@@ -3,6 +3,7 @@ package main
 import (
 	"datatypes/organization"
 	"fmt"
+	"reflect"
 )
 
 func main() {
@@ -22,7 +23,18 @@ func main() {
 	eu1 := organization.NewEuropeanUnionIdentifier("12345", "France")
 	eu2 := organization.NewEuropeanUnionIdentifier("12345", "France")
 
-	if eu1 == eu2 {
+	if reflect.DeepEqual(eu1, eu2) {
 		fmt.Println("We match")
 	}
+
+	map1 := map[string]int{
+		"x": 1,
+		"y": 2,
+	}
+	map2 := map[string]int{
+		"x": 1,
+		"y": 2,
+		"z": 3,
+	}
+	fmt.Printf("Map equal: %v\n", reflect.DeepEqual(map1, map2))
 }
