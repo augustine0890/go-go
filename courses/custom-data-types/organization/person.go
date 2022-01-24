@@ -48,10 +48,13 @@ type EuropeanUnionIdentifier struct {
 }
 
 // Return the interface
-func NewEuropeanUnionIdentifier(id, country string) Citizen {
-	return EuropeanUnionIdentifier{
-		id:      id,
-		country: []string{country},
+func NewEuropeanUnionIdentifier(id interface{}, country string) Citizen {
+	switch v := id.(type) {
+	case string:
+		return EuropeanUnionIdentifier{
+			id:      v,
+			country: []string{country},
+		}
 	}
 }
 

@@ -37,4 +37,5 @@ func main() {
 		"z": 3,
 	}
 	fmt.Printf("Map equal: %v\n", reflect.DeepEqual(map1, map2))
+
 }
