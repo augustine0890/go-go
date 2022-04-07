@@ -22,11 +22,11 @@ func GetEnv(key string) string {
 }
 
 func main() {
-	// polygon := GetEnv("POLYGON")
-	bsc := GetEnv("BSC")
+	polygon := GetEnv("POLYGON")
+	// bsc := GetEnv("BSC")
 	// rinkeby := GetEnv("RINKEBY")
 
-	conn, err := ethclient.Dial(bsc) // polygon
+	conn, err := ethclient.Dial(polygon) // polygon
 	if err != nil {
 		log.Fatal(err)
 	}
