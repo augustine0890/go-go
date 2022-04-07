@@ -3,6 +3,7 @@ package main
 import (
 	"block-info/handlers"
 	"block-info/middleware"
+	"block-info/utils"
 	"log"
 	"net/http"
 	"os"
@@ -22,6 +23,9 @@ func GetEnv(key string) string {
 }
 
 func main() {
+	// test event
+	utils.Event()
+
 	polygon := GetEnv("POLYGON")
 	// bsc := GetEnv("BSC")
 	// rinkeby := GetEnv("RINKEBY")
