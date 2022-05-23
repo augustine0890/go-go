@@ -18,12 +18,12 @@ func findSum(arr []int, k int) []int {
 	return []int{}
 }
 
-func binarySearch(arr []int, k int) bool {
+func binarySearch(arr []int, k int) int {
 	low := 0
 	high := len(arr) - 1
-
+	var median int
 	for low <= high {
-		median := (low + high) / 2
+		median = (low + high) / 2
 
 		if arr[median] < k {
 			low = median + 1
@@ -33,17 +33,18 @@ func binarySearch(arr []int, k int) bool {
 	}
 
 	if low == len(arr) || arr[low] != k {
-		return false
+		return -1
 	}
 
-	return true
+	return median
 }
 
+// O(nlogn)
 func findSum2(arr []int, k int) []int {
 	sort.Ints(arr)
 	for i := 0; i < len(arr); i++ {
 		index := binarySearch(arr, k-arr[i])
-		if index {
+		if index != -1 && index != i {
 			return []int{arr[i], k - arr[i]}
 		}
 	}
