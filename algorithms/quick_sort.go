@@ -50,6 +50,7 @@ func quickSortDC(arr []int) []int {
 	}
 }
 
+// The average runtime of quicksort is O(nlogn)
 func main() {
 	arr := []int{5, 6, 7, 2, 1, 0}
 	fmt.Println(quickSort(arr, 0, len(arr)-1))
