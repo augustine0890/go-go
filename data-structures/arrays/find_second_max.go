@@ -2,17 +2,11 @@ package main
 
 import "fmt"
 
-// Finds the smalles number in given array
-// O(n)
-func findMin(arr []int) int {
+// O(nlogn)
+func findSecondMax(arr []int) int {
 	if len(arr) >= 2 {
-		min := arr[0]
-		for _, v := range arr {
-			if v < min {
-				min = v
-			}
-		}
-		return min
+		sorted := mergeSort(arr)
+		return sorted[len(arr)-2]
 	}
 	return -1
 }
@@ -50,20 +44,30 @@ func merge(first, second []int) []int {
 	return final
 }
 
-// mergeSort is in O(nlogn) --> takes O(nlogn) time
-func findMin2(arr []int) int {
-	if len(arr) >= 2 {
-		sorted := mergeSort(arr)
-		return sorted[0]
+//  O(n) since the array is traversed twice.
+func findSecondMax2(arr []int) int {
+	var max int
+	var secondMax int
+	for _, v := range arr {
+		if v > max {
+			max = v
+		}
 	}
-	return -1
+
+	for _, v := range arr {
+		if v != max && v > secondMax {
+			secondMax = v
+		}
+	}
+
+	return secondMax
 }
 
 func main() {
-	fmt.Println(findMin([]int{9, 2, 3, 6}))
-	fmt.Println(findMin([]int{4, 2, 1, 5, 0}))
+	fmt.Println(findSecondMax([]int{9, 2, 3, 6}))
+	fmt.Println(findSecondMax([]int{4, 2, 1, 5, 0}))
 
-	fmt.Println(findMin2([]int{9, 2, 3, 6}))
-	fmt.Println(findMin2([]int{4, 2, 1, 5, 0}))
+	fmt.Println(findSecondMax2([]int{9, 2, 3, 6}))
+	fmt.Println(findSecondMax2([]int{4, 2, 1, 5, 0}))
 
 }
