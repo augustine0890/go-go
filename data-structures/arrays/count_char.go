@@ -17,7 +17,7 @@ func charCount(s string) map[string]int {
 	counters := make(map[string]int)
 
 	for _, c := range s {
-		if isLetter(c) {
+		if isLetterNumeric(c) {
 			char := strings.ToLower(string(c))
 			if _, ok := counters[char]; ok {
 				counters[char] += 1
@@ -29,12 +29,12 @@ func charCount(s string) map[string]int {
 	return counters
 }
 
-func isLetter(c rune) bool {
-	return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')
+func isLetterNumeric(c rune) bool {
+	return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || (48 <= c && c <= 57)
 }
 
 func main() {
-	fmt.Println(charCount("Your PIN number is: 11232"))
+	fmt.Println(charCount("Your PIN number is: 0112329"))
 	fmt.Println(charCount("hello"))
 	fmt.Println(charCount("something you can count"))
 }
