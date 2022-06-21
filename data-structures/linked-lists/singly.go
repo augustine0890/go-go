@@ -2,6 +2,10 @@ package main
 
 import "fmt"
 
+func NewLinkedList() *LinkedList {
+	return &LinkedList{}
+}
+
 type ListNode struct {
 	data interface{}
 	next *ListNode
@@ -145,4 +149,24 @@ func (ll *LinkedList) Delete(position int) (interface{}, error) {
 	ll.size--
 	return current.data, nil
 }
-func main() {}
+
+func (ll *LinkedList) Reverse() {
+	node := ll.head
+	var prev *ListNode
+	for node != nil {
+		node, prev, node.next = node.next, node, prev
+	}
+	ll.head = prev
+}
+
+func main() {
+	ll := NewLinkedList()
+	ll.InsertBeginning(1)
+	ll.InsertBeginning(2)
+	ll.InsertBeginning(3)
+	ll.InsertBeginning(4)
+
+	ll.Display()
+	ll.Reverse()
+	ll.Display()
+}
