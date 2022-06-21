@@ -26,3 +26,12 @@
   - Improve the performance of your solution
   - Other ways to refactor your solution
   - How have other people solved this problem
+
+# Problem Solving Patterns
+- Frequency Counter
+- Multiple Pointers
+- Sliding Window
+- Divide and Conquer
+- Dynamic Programming
+- Greedy Algorithms
+- Backtracking
