@@ -28,5 +28,5 @@ func findSquare(x int) int {
 func main() {
 	fmt.Println(same([]int{1, 2, 3, 2}, []int{9, 1, 4, 4}))
 	fmt.Println(same([]int{1, 2, 3, 2}, []int{9, 1, 4}))
-	fmt.Println(same([]int{1, 2, 3, 2, 4}, []int{9, 1, 4, 4, 11}))
+	fmt.Println(same([]int{1, 2, 3, 2, 4}, []int{9, 1, 4, 3, 16}))
 }
