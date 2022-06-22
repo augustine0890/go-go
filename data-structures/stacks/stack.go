@@ -33,9 +33,20 @@ func (s *Stack) Size() uint {
 	return uint(s.top + 1)
 }
 
+func (s *Stack) Resize() {
+	if s.IsFull() {
+		s.capacity *= 2
+	} else {
+		s.capacity /= 2
+	}
+	target := make([]interface{}, s.capacity)
+	copy(target, s.array[:s.top+1])
+	s.array = target
+}
+
 func (s *Stack) Push(data interface{}) error {
 	if s.IsFull() {
-		return errors.New("stack is full")
+		s.Resize()
 	}
 	s.top++
 	s.array[s.top] = data
@@ -48,6 +59,9 @@ func (s *Stack) Pop() (interface{}, error) {
 	}
 	temp := s.array[s.top]
 	s.top--
+	if s.Size() < s.capacity/2 {
+		s.Resize()
+	}
 	return temp, nil
 }
 
