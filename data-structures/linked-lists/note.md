@@ -6,3 +6,4 @@
   - Find n-th node from the end of list
 - Searching: O(n)
 - Access: O(n)
+- Insertion or deletioni at beginning: O(1)
