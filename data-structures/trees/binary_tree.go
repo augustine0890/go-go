@@ -168,6 +168,39 @@ func PostOrder(root *BinaryTreeNode) []int {
 	return result
 }
 
+/**
+Level Order Traversal
+- Visit the root
+- While traversing level l, keep all the elements at level l + 1 in queue
+- Go to the next level and visit all the nodes at that level
+- Repeat this until all levels are completed
+**/
+func LevelOrder(root *BinaryTreeNode) [][]int {
+	if root == nil {
+		return [][]int{}
+	}
+
+	var result [][]int
+	queue := []*BinaryTreeNode{root}
+	for len(queue) > 0 {
+		qlen := len(queue)
+		var level []int
+		for i := 0; i < qlen; i++ {
+			node := queue[0]
+			level = append(level, node.data)
+			queue = queue[1:]
+			if node.left != nil {
+				queue = append(queue, node.left)
+			}
+			if node.right != nil {
+				queue = append(queue, node.right)
+			}
+		}
+		result = append(result, level)
+	}
+	return result
+}
+
 func main() {
 	/*
 						10
@@ -212,4 +245,7 @@ func main() {
 
 	fmt.Println("Inorder Traversal - Iterative Solution : ")
 	PostOrder(root)
+
+	levelOrder := LevelOrder(root)
+	fmt.Println("Level Order Traversal: ", levelOrder)
 }
