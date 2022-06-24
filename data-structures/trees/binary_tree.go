@@ -137,6 +137,37 @@ func InOrderWalker(root *BinaryTreeNode) <-chan int {
 	return ch
 }
 
+/**
+PostOrder Traversal
+- Traverse the left subtree in Inorder
+- Traverse the right subtree in Inorder
+- Visit the root
+**/
+func PostOrder(root *BinaryTreeNode) []int {
+	var result []int
+	stack := NewStack(1)
+	stack.Push(root)
+
+	for !stack.IsEmpty() {
+		node, _ := stack.Pop()
+		temp := node.(*BinaryTreeNode)
+		result = append(result, temp.data)
+		if temp.left != nil {
+			stack.Push(temp.left)
+		}
+		if temp.right != nil {
+			stack.Push(temp.right)
+		}
+	}
+	n := len(result)
+	for i := 0; i < n/2; i++ {
+		j := n - i - 1
+		result[i], result[j] = result[j], result[i]
+	}
+	fmt.Println(result)
+	return result
+}
+
 func main() {
 	/*
 						10
@@ -178,4 +209,7 @@ func main() {
 	fmt.Println("Inorder Traversal - Iterative Solution : ")
 	InOrder(root)
 	fmt.Println()
+
+	fmt.Println("Inorder Traversal - Iterative Solution : ")
+	PostOrder(root)
 }
