@@ -280,6 +280,30 @@ func find(root *BinaryTreeNode, data int) *BinaryTreeNode {
 	return nil
 }
 
+// getHeight return the height of a binary tree as an integer
+func getHeight(root *BinaryTreeNode) int {
+	height := -1
+	if root == nil {
+		return -1
+	}
+	queue := []*BinaryTreeNode{root}
+	for len(queue) > 0 {
+		qlen := len(queue)
+		for i := 0; i < qlen; i++ {
+			node := queue[0]
+			queue = queue[1:]
+			if node.left != nil {
+				queue = append(queue, node.left)
+			}
+			if node.right != nil {
+				queue = append(queue, node.right)
+			}
+		}
+		height++
+	}
+	return height
+}
+
 func main() {
 	/*
 						10
@@ -332,4 +356,5 @@ func main() {
 	fmt.Println("Maximum value:", max)
 	fmt.Println("Minimum value:", findMin(root))
 	fmt.Println("Find the value (50):", find(root, 50))
+	fmt.Println("Height of the tree:", getHeight(root))
 }
