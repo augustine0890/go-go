@@ -228,6 +228,33 @@ func findMax(root *BinaryTreeNode) int {
 	return max
 }
 
+// Find the minimum element in binary tree
+func findMin(root *BinaryTreeNode) int {
+	min := math.MaxInt32
+	if root == nil {
+		return min
+	}
+
+	queue := []*BinaryTreeNode{root}
+	for len(queue) > 0 {
+		qlen := len(queue)
+		for i := 0; i < qlen; i++ {
+			node := queue[0]
+			if node.data < min {
+				min = node.data
+			}
+			queue = queue[1:]
+			if node.left != nil {
+				queue = append(queue, node.left)
+			}
+			if node.right != nil {
+				queue = append(queue, node.right)
+			}
+		}
+	}
+	return min
+}
+
 func main() {
 	/*
 						10
@@ -278,4 +305,5 @@ func main() {
 
 	max := findMax(root)
 	fmt.Println("Maximum value:", max)
+	fmt.Println("Minimum value:", findMin(root))
 }
