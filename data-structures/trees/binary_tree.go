@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 )
 
@@ -201,6 +202,32 @@ func LevelOrder(root *BinaryTreeNode) [][]int {
 	return result
 }
 
+// Find the maximum element in a binary tree
+func findMax(root *BinaryTreeNode) int {
+	max := math.MinInt32
+	if root == nil {
+		return max
+	}
+	queue := []*BinaryTreeNode{root}
+	for len(queue) > 0 {
+		qlen := len(queue)
+		for i := 0; i < qlen; i++ {
+			node := queue[0]
+			if node.data > max {
+				max = node.data
+			}
+			queue = queue[1:]
+			if node.left != nil {
+				queue = append(queue, node.left)
+			}
+			if node.right != nil {
+				queue = append(queue, node.right)
+			}
+		}
+	}
+	return max
+}
+
 func main() {
 	/*
 						10
@@ -219,7 +246,7 @@ func main() {
 	root.right.right = &BinaryTreeNode{nil, 60, nil}
 	root.left.left.left = &BinaryTreeNode{nil, 70, nil}
 
-	fmt.Println("Preorder Traversal - Iterative Solution : ")
+	fmt.Println("Preorder Traversal - Iterative Solution: ")
 	PreOrder(root)
 	fmt.Println()
 
@@ -239,13 +266,16 @@ func main() {
 	}
 	fmt.Println()
 
-	fmt.Println("Inorder Traversal - Iterative Solution : ")
+	fmt.Println("Inorder Traversal - Iterative Solution: ")
 	InOrder(root)
 	fmt.Println()
 
-	fmt.Println("Inorder Traversal - Iterative Solution : ")
+	fmt.Println("Inorder Traversal - Iterative Solution: ")
 	PostOrder(root)
 
 	levelOrder := LevelOrder(root)
-	fmt.Println("Level Order Traversal: ", levelOrder)
+	fmt.Println("Level Order Traversal:", levelOrder)
+
+	max := findMax(root)
+	fmt.Println("Maximum value:", max)
 }
