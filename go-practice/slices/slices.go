@@ -3,6 +3,9 @@ package main
 import "fmt"
 
 func main() {
+	city := [...]string{"London", "New York", "Miami"}
+	fmt.Println("Length of 'c':", len(city))
+
 	var x [5]int = [5]int{1, 2, 3, 4, 5}
 	var s []int = x[1:3]
 	fmt.Println(s)

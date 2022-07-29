@@ -62,4 +62,15 @@ func main() {
 	}
 	fmt.Println(aDoctor)
 	fmt.Println(aDoctor.Companions)
+
+	key := "London"
+	value := 10
+	temp := map[string]int{
+		key: value,
+	}
+	fmt.Printf("temp[%v]=%v\n", key, temp[key])
+	lookup := "Seoul"
+	if _, ok := temp[lookup]; !ok {
+		fmt.Printf("Not found key: %v\n", lookup)
+	}
 }
