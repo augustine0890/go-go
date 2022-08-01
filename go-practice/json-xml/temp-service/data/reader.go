@@ -1,4 +1,4 @@
-package main
+package data
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ type Response struct {
 	Id          string  `json:"id"`
 	Name        string  `json:"name"`
 	HasBeach    bool    `json:"hasBeach"`
-	HasMountain string  `json:"hasMountain"`
+	HasMountain bool    `json:"hasMountain"`
 	TempC       float64 `json:"tempC"`
 }
 
@@ -24,7 +24,7 @@ type reader struct {
 // NewReader initialises a new reader
 func NewReader() DataReader {
 	return &reader{
-		path: "cities.json",
+		path: "data/cities.json",
 	}
 }
 

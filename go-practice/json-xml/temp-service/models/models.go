@@ -1,4 +1,6 @@
-package main
+package models
+
+import "temp-service/data"
 
 var (
 	beachVacationThreshold float64 = 22
@@ -61,7 +63,7 @@ type Cities interface {
 
 // NewCities initialises the Cities data structure by calling the
 // ReadData method to read information from file.
-func NewCities(reader DataReader) (Cities, error) {
+func NewCities(reader data.DataReader) (Cities, error) {
 	data, err := reader.ReadData()
 	if err != nil {
 		return nil, err
