@@ -10,15 +10,16 @@ type StringHandler struct {
 }
 
 func (sh StringHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	Printfln("Method: %v", request.Method)
-	Printfln("URL: %v", request.URL)
-	Printfln("HTTP Version: %v", request.Proto)
-	Printfln("Host: %v", request.Host)
-	for name, val := range request.Header {
-		Printfln("Header: %v, Value: %v", name, val)
+	Printfln("Request for %v", request.URL.Path)
+
+	switch request.URL.Path {
+	case "/favicon.ico":
+		http.NotFound(writer, request)
+	case "/message":
+		io.WriteString(writer, sh.message)
+	default:
+		http.Redirect(writer, request, "/message", http.StatusTemporaryRedirect)
 	}
-	Printfln("---")
-	io.WriteString(writer, sh.message)
 }
 
 func main() {
