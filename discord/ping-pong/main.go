@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
+	"ping-pong/config"
 
-	"github.com/go-git/go-git/v5/config"
+	"ping-pong/bot"
 )
 
 func main() {
