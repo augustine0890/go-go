@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"ping-pong/internal/config"
 	"syscall"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -52,10 +53,10 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if m.Content == "ping" {
-		s.ChannelMessageSend(m.ChannelID, "pong!")
+		s.ChannelMessageSend(m.ChannelID, m.Timestamp.Format(time.RFC1123)+": pong!")
 	}
 
 	if m.Content == "pong" {
-		s.ChannelMessageSend(m.ChannelID, "ping!")
+		s.ChannelMessageSend(m.ChannelID, m.Timestamp.Format(time.RFC1123)+": ping!")
 	}
 }
