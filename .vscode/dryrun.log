@@ -1,6 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory `/Users/supertree/Documents/code/go-go'
-make: Leaving directory `/Users/supertree/Documents/code/go-go'
- 
-make: *** No targets specified and no makefile found.  Stop.
-

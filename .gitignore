@@ -1,6 +1,11 @@
 .DS_Store
 .idea
 .env
+.vscode/*
 
 # Discord config
 config.json
+
+# One evening
+.tdl-exercise
+.tdl-training
