@@ -8,6 +8,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"reflect"
+	"strconv"
 )
 
 func load() (string, error) {
@@ -16,6 +18,13 @@ func load() (string, error) {
 		return "nil", err
 	}
 	return string(data), nil
+}
+
+func guess(number int) (answer int, err error) {
+	if number > 99 {
+		err = errors.New("Number is larger than 100")
+	}
+	return
 }
 
 func main() {
@@ -44,4 +53,14 @@ func main() {
 		}
 		fmt.Println(record)
 	}
+
+	_, err = guess(101)
+	fmt.Println(err)
+
+	str := "123456789"
+	num, err := strconv.ParseInt(str, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Type:", reflect.TypeOf(num))
 }
