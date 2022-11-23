@@ -24,7 +24,8 @@ func GetEnv(key string) string {
 
 func main() {
 	// test event
-	utils.Event()
+	// utils.Event()
+	utils.EventSubscribe()
 
 	polygon := GetEnv("POLYGON")
 	// bsc := GetEnv("BSC")
