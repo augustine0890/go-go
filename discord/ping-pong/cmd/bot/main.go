@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"os/signal"
@@ -14,10 +13,15 @@ import (
 
 const defaultConfig = "./config/config.json"
 
-var flagConfig = flag.String("c", defaultConfig, "The location of the config file.")
+// var flagConfig = flag.String("c", defaultConfig, "The location of the config file.")
 
 func main() {
-	cfg, err := config.ReadConfig(*flagConfig)
+	dir, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	flagConfig := dir + "/config.json"
+	cfg, err := config.ReadConfig(flagConfig)
 	if err != nil {
 		panic(err)
 	}
